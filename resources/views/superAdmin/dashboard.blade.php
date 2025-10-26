@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -7,75 +7,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('dashboards.css') }}">
-    <script src="{{ asset('dashboards.js') }}" defer></script>
+    
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head>
 <body>
-    <style>
-        .welcome-message {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #4f46e5, #3730a3);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 4.5s;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            opacity: 0;
-        }
-
-        .welcome-message.show {
-            opacity: 1;
-        }
-
-        .welcome-message i {
-            font-size: 1.2em;
-            color: #a5b4fc;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translate(-50%, -100%);
-                opacity: 0;
-            }
-            to {
-                transform: translate(-50%, 0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-            }
-        }
-    </style>
+    
 
     <div id="welcomeMessage" class="welcome-message">
         <i class="fas fa-crown"></i>
         <span>Bienvenue Super Administrateur</span>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const welcomeMessage = document.getElementById('welcomeMessage');
-            welcomeMessage.classList.add('show');
-            
-            setTimeout(() => {
-                welcomeMessage.style.display = 'none';
-            }, 5000);
-        });
-    </script>
+    
 
     <div class="dashboard-container">
         <!-- Sidebar -->
@@ -105,14 +48,14 @@
                         <a href="#" class="nav-link" onclick="showSection('departments')">
                            <i class="fas fa-building-columns"></i>
 
-                            Départements
+                            DÃ©partements
                         </a>
                     </li>
                     
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="showSection('committee')">
                            <i class="fa fa-people-arrows"></i> 
-                            Comité de Nehemie
+                            ComitÃ© de Nehemie
                         </a>
                     </li>
                     <li class="nav-item">
@@ -130,7 +73,7 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="showSection('settings')">
                             <i class="fas fa-cog"></i>
-                            Paramètres
+                            ParamÃ¨tres
                         </a>
                     </li>
                     <li class="nav-item">
@@ -156,7 +99,7 @@
                             @csrf
                             <i class="fas fa-sign-out-alt"></i>
                             <button type="submit" style="background: none; border: none; color: inherit; padding: 0; cursor: pointer;">
-                                Déconnexion
+                                DÃ©connexion
                             </button>
                         </form>
                     </li>
@@ -181,7 +124,7 @@
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-card-title">Départements Actifs</div>
+                        <div class="stat-card-title">DÃ©partements Actifs</div>
                         <div class="stat-card-value">{{ $totalDepts ?? '0' }}</div>
                         <div class="stat-card-change">
                             @php
@@ -189,15 +132,15 @@
                                 $deptPercentage = $totalDepts > 0 ? round(($activeDepts / $totalDepts) * 100) : 0;
                             @endphp
                             <i class="fas fa-{{ $deptPercentage == 100 ? 'check' : 'info-circle' }}"></i>
-                            {{ $deptPercentage }}% opérationnels
+                            {{ $deptPercentage }}% opÃ©rationnels
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-card-title">Comités</div>
+                        <div class="stat-card-title">ComitÃ©s</div>
                         <div class="stat-card-value">{{ $totalCom ?? '0' }}</div>
                         <div class="stat-card-change">
                             <i class="fas fa-users"></i>
-                            {{ $totalCom }} comité{{ $totalCom > 1 ? 's' : '' }} actif{{ $totalCom > 1 ? 's' : '' }}
+                            {{ $totalCom }} comitÃ©{{ $totalCom > 1 ? 's' : '' }} actif{{ $totalCom > 1 ? 's' : '' }}
                         </div>
                     </div>
                     <div class="stat-card">
@@ -209,11 +152,11 @@
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-card-title">Rôles</div>
+                        <div class="stat-card-title">RÃ´les</div>
                         <div class="stat-card-value">{{ $nbreRole ?? '0' }}</div>
                         <div class="stat-card-change">
                             <i class="fas fa-user-shield"></i>
-                            Rôles configurés
+                            RÃ´les configurÃ©s
                         </div>
                     </div>
                     <div class="stat-card">
@@ -233,11 +176,11 @@
                     </a>
                     <a href="{{route('departments.create')}}" class="action-card">
                         <i class="fas fa-folder-plus action-icon"></i>
-                        <h3>Nouveau département</h3>
+                        <h3>Nouveau dÃ©partement</h3>
                     </a>
                     <a href="{{route('departments.assign.head.form')}}" class="action-card">
                         <i class="fas fa-user-tie action-icon"></i>
-                        <h3>Assigner un Chef de Département</h3>
+                        <h3>Assigner un Chef de DÃ©partement</h3>
                     </a>
                     <a href="{{route('departments.statistics')}}" class="action-card">
                         <i class="fas fa-chart-line action-icon"></i>
@@ -247,7 +190,7 @@
                 <!-- Recent Activity -->
                 <div class="activity-section">
                     <div class="section-header">
-                        <h2 class="section-title">Activités récentes</h2>
+                        <h2 class="section-title">ActivitÃ©s rÃ©centes</h2>
                         <a href="#" class="btn">Voir tout</a>
                     </div>
                     <table class="activity-table">
@@ -255,9 +198,9 @@
                             <tr>
                                 <th>Utilisateur</th>
                                 <th>Inscription</th>
-                                <th>Dernière MAJ</th>
-                                <th>Dernière Connexion</th>
-                                <th>Dernière Activité</th>
+                                <th>DerniÃ¨re MAJ</th>
+                                <th>DerniÃ¨re Connexion</th>
+                                <th>DerniÃ¨re ActivitÃ©</th>
                                 <th>Statut</th>
                             </tr>
                         </thead>
@@ -283,47 +226,14 @@
                             @empty
                             <tr>
                                 <td colspan="6" class="text-center">
-                                    <i class="fas fa-info-circle"></i> Aucun utilisateur trouvé
+                                    <i class="fas fa-info-circle"></i> Aucun utilisateur trouvÃ©
                                 </td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
                     
-                    <style>
-                        .status-dot {
-                            width: 8px;
-                            height: 8px;
-                            border-radius: 50%;
-                        }
-                        .bg-success {
-                            background-color: #10B981;
-                        }
-                        .bg-gray {
-                            background-color: #9CA3AF;
-                        }
-                        .activity-table {
-                            width: 100%;
-                            border-collapse: separate;
-                            border-spacing: 0;
-                        }
-                        .activity-table th {
-                            background-color: #F8FAFC;
-                            padding: 12px;
-                            font-weight: 600;
-                            text-align: left;
-                            color: #64748B;
-                            font-size: 0.875rem;
-                        }
-                        .activity-table td {
-                            padding: 12px;
-                            border-top: 1px solid #E2E8F0;
-                            font-size: 0.875rem;
-                        }
-                        .activity-table tr:hover {
-                            background-color: #F8FAFC;
-                        }
-                    </style>
+                    
                 </div>
             </section>
             <!-- Users Section -->
@@ -339,8 +249,8 @@
             <!-- Departments Section -->
             <section id="section-departments" style="display:none">
                 <div class="page-header">
-                    <h1 class="page-title">Départements</h1>
-                    <div class="breadcrumb">Tableau de bord / Départements</div>
+                    <h1 class="page-title">DÃ©partements</h1>
+                    <div class="breadcrumb">Tableau de bord / DÃ©partements</div>
                 </div>
                 <div>
                     @include('departments.quickAction')
@@ -349,8 +259,8 @@
             <!-- Committee Section -->
             <section id="section-committee">
                 <div class="page-header">
-                    <h1 class="page-title">Comité de Nehemie</h1>
-                    <div class="breadcrumb">Tableau de bord / Comité de Nehemie</div>
+                    <h1 class="page-title">ComitÃ© de Nehemie</h1>
+                    <div class="breadcrumb">Tableau de bord / ComitÃ© de Nehemie</div>
                 </div>
                 <div>
                     @include('committee.quickAction')
@@ -380,8 +290,8 @@
             <!-- Settings Section -->
             <section id="section-settings" style="display:none">
                 <div class="page-header">
-                    <h1 class="page-title">Paramètres</h1>
-                    <div class="breadcrumb">Tableau de bord / Paramètres</div>
+                    <h1 class="page-title">ParamÃ¨tres</h1>
+                    <div class="breadcrumb">Tableau de bord / ParamÃ¨tres</div>
                 </div>
                 <div>
                     @include('superAdmin.partials.settings-content')
@@ -411,5 +321,7 @@
         
     </div>
     
+    <script src="{{ asset('js/dashboard.js') }}"></script>
 </body>
 </html>
+

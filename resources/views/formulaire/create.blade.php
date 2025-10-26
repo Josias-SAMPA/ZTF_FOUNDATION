@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HQ Staff Registration - ZTF Foundation</title>
-<script src="https://cdn.tailwindcss.com"></script>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{asset('create.css')}}">
 </head>
@@ -31,7 +31,7 @@
         <div class="flex items-center"><div class="progress-step">9</div></div>
     </div>
 
-    <!-- Formulaire multi-étapes -->
+    <!-- Formulaire multi-Ã©tapes -->
     <form id="registrationForm" class="space-y-8" method="POST" action="{{ route('download.pdf') }}" enctype="multipart/form-data">
         @csrf
 
@@ -213,7 +213,9 @@
     </form>
 </div>
 
-<script src="{{asset('create.js')}}"></script>
 
+
+    <script src="{{ asset('js/create.js') }}"></script>
 </body>
 </html>
+

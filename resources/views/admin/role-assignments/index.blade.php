@@ -1,9 +1,9 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Gestion des Rôles et Permissions</h1>
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Gestion des RÃ´les et Permissions</h1>
 
         @if(session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -49,7 +49,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <button onclick="openModal('{{ $user->id }}')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Gérer les rôles et permissions
+                                    GÃ©rer les rÃ´les et permissions
                                 </button>
                             </td>
                         </tr>
@@ -64,7 +64,7 @@
 <div id="assignmentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
     <div class="relative top-20 mx-auto p-5 border w-4/5 shadow-lg rounded-md bg-white">
         <div class="flex justify-between items-center pb-3">
-            <h3 class="text-xl font-bold">Assigner les Rôles et Permissions</h3>
+            <h3 class="text-xl font-bold">Assigner les RÃ´les et Permissions</h3>
             <button onclick="closeModal()" class="text-black close-modal">&times;</button>
         </div>
         
@@ -73,7 +73,7 @@
                 @csrf
                 <input type="hidden" name="user_id" id="modalUserId">
                 
-                <h4 class="font-bold mb-2">Rôles</h4>
+                <h4 class="font-bold mb-2">RÃ´les</h4>
                 <div class="grid grid-cols-3 gap-4 mb-4">
                     @foreach($roles as $role)
                         <div class="flex items-center">
@@ -84,7 +84,7 @@
                 </div>
                 
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Sauvegarder les Rôles
+                    Sauvegarder les RÃ´les
                 </button>
             </form>
 
@@ -113,31 +113,6 @@
 @endsection
 
 @section('scripts')
-<script>
-    function openModal(userId) {
-        document.getElementById('modalUserId').value = userId;
-        document.getElementById('modalUserIdPerm').value = userId;
-        document.getElementById('assignmentModal').classList.remove('hidden');
-        
-        // Réinitialiser les checkboxes
-        document.querySelectorAll('.role-checkbox').forEach(cb => cb.checked = false);
-        document.querySelectorAll('.permission-checkbox').forEach(cb => cb.checked = false);
-        
-        // Charger les rôles et permissions actuels
-        fetch(`/admin/get-user-roles-permissions/${userId}`)
-            .then(response => response.json())
-            .then(data => {
-                data.roles.forEach(roleId => {
-                    document.querySelector(`input[name="roles[]"][value="${roleId}"]`).checked = true;
-                });
-                data.permissions.forEach(permId => {
-                    document.querySelector(`input[name="permissions[]"][value="${permId}"]`).checked = true;
-                });
-            });
-    }
 
-    function closeModal() {
-        document.getElementById('assignmentModal').classList.add('hidden');
-    }
-</script>
 @endsection
+    <script src="{{ asset('js/index.js') }}"></script>

@@ -1,116 +1,27 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Rapport du Département</title>
-    <style>
-        @page {
-            size: A4;
-            margin: 2cm;
-        }
-        body {
-            font-family: "Times New Roman", Times, serif;
-            font-size: 12pt;
-            color: #000;
-            line-height: 1.4;
-            margin: 0;
-        }
-        .header {
-            text-align: center;
-            border-bottom: 2px solid #000;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        .logo {
-            width: 150px;
-            height: auto;
-            margin: 0 auto 15px;
-            display: block;
-        }
-        .header h1 {
-            font-size: 16pt;
-            font-weight: bold;
-            margin: 0;
-        }
-        .header p {
-            margin: 5px 0 0;
-            font-size: 11pt;
-            color: #444;
-        }
-        .section-title {
-            font-size: 13pt;
-            font-weight: bold;
-            margin: 25px 0 10px;
-            border-bottom: 1px solid #000;
-            padding-bottom: 4px;
-        }
-        .department-info {
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #000;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-        }
-        .department-info h3 {
-            margin: 5px 0;
-            font-size: 12pt;
-        }
-        .department-info p {
-            margin: 3px 0;
-            font-size: 11pt;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 11pt;
-        }
-        th, td {
-            border: 1px solid #000;
-            padding: 6px 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #eaeaea;
-            font-weight: bold;
-            text-align: center;
-        }
-        tr:nth-child(even) td {
-            background-color: #f9f9f9;
-        }
-        .empty-message {
-            text-align: center;
-            font-style: italic;
-            color: #666;
-        }
-        .footer {
-            text-align: center;
-            border-top: 1px solid #000;
-            padding-top: 8px;
-            font-size: 10pt;
-            color: #444;
-            position: fixed;
-            bottom: 1cm;
-            width: 100%;
-        }
-    </style>
+    <title>Rapport du DÃ©partement</title>
+    
+    <link rel="stylesheet" href="{{ asset('css/department-report.css') }}">
 </head>
 <body>
     <!-- HEADER -->
     <div class="header">
         <div style="text-align: center; margin-bottom: 20px;">
             <div style="font-size: 24px; font-weight: bold; color: #003366;">CMCI</div>
-            <div style="font-size: 16px; color: #666;">Communaute Missionnaire Chrétien International</div>
+            <div style="font-size: 16px; color: #666;">Communaute Missionnaire ChrÃ©tien International</div>
         </div>
-        <h1>RAPPORT DU DÉPARTEMENT</h1>
-        <p>Téléchargé le {{ now()->format('d/m/Y à H:i') }}</p>
+        <h1>RAPPORT DU DÃ‰PARTEMENT</h1>
+        <p>TÃ©lÃ©chargÃ© le {{ now()->format('d/m/Y Ã  H:i') }}</p>
     </div>
 
-    <!-- INFORMATIONS DU DÉPARTEMENT -->
+    <!-- INFORMATIONS DU DÃ‰PARTEMENT -->
     <div class="department-info">
-        <h3>Nom du Département : {{ $department->name }}</h3>
-        <h3>Chef de département : {{$department->head->name}}</h3>
-        <h3>Contact du Chef de Departement : {{ $department->head->phone ?? 'Non renseigné' }}</h3>
+        <h3>Nom du DÃ©partement : {{ $department->name }}</h3>
+        <h3>Chef de dÃ©partement : {{$department->head->name}}</h3>
+        <h3>Contact du Chef de Departement : {{ $department->head->phone ?? 'Non renseignÃ©' }}</h3>
     </div>
 
     <!-- SECTION OUVRIERS -->
@@ -119,10 +30,10 @@
         <thead>
             <tr>
                 <th style="width: 20%;">Service</th>
-                <th style="width: 25%;">Nom et Prénom</th>
+                <th style="width: 25%;">Nom et PrÃ©nom</th>
                 <th style="width: 20%;">Poste</th>
                 <th style="width: 15%;">Matricule</th>
-                <th style="width: 20%;">Téléphone</th>
+                <th style="width: 20%;">TÃ©lÃ©phone</th>
             </tr>
         </thead>
         <tbody>
@@ -137,14 +48,14 @@
                             @php $currentService = $service->name; @endphp
                         @endif
                         <td>{{ $user->name }}</td>
-                        <td>{{ $user->roles->first()->name ?? 'Non assigné' }}</td>
+                        <td>{{ $user->roles->first()->name ?? 'Non assignÃ©' }}</td>
                         <td>{{ $user->matricule }}</td>
-                        <td>{{ $user->phone ?? 'Non renseigné' }}</td>
+                        <td>{{ $user->phone ?? 'Non renseignÃ©' }}</td>
                     </tr>
                 @empty
                     <tr>
                         <td>{{ $service->name }}</td>
-                        <td colspan="4" class="empty-message">Aucun personnel affecté à ce service</td>
+                        <td colspan="4" class="empty-message">Aucun personnel affectÃ© Ã  ce service</td>
                     </tr>
                 @endforelse
             @endforeach
@@ -158,3 +69,4 @@
     </div>
 </body>
 </html>
+

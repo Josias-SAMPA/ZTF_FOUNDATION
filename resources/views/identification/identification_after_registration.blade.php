@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,8 +11,8 @@
 <body>
     <div class="form-container">
         <div class="form-header">
-            <h2>Vérification d'identité</h2>
-            <p>Veuillez entrer le code d'identification reçu par email</p>
+            <h2>VÃ©rification d'identitÃ©</h2>
+            <p>Veuillez entrer le code d'identification reÃ§u par email</p>
         </div>
 
         <form action="{{ route('verify.identification') }}" method="POST">
@@ -39,11 +39,11 @@
                 </div>
             @endif
 
-            <button type="submit" class="submit-button">Vérifier</button>
+            <button type="submit" class="submit-button">VÃ©rifier</button>
         </form>
 
         <div class="form-footer">
-            <p>Vous n'avez pas reçu de code ?</p>
+            <p>Vous n'avez pas reÃ§u de code ?</p>
             <form action="{{route('resend.code')}}" method="POST">
                 @csrf
                 <button type="submit" class="resend-button">
@@ -53,6 +53,8 @@
         </div>
     </div>
 
-<script src="{{asset('identification_after_registration.js')}}"></script>
+
+    <script src="{{ asset('js/identification_after_registration.js') }}"></script>
 </body>
 </html>
+

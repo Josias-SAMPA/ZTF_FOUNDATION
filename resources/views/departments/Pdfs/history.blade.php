@@ -1,3 +1,4 @@
+﻿    <link rel="stylesheet" href="{{ asset('css/history.css') }}">
 @extends('layouts.app')
 
 @section('content')
@@ -26,7 +27,7 @@
                     <thead>
                         <tr class="bg-gray-100">
                             <th class="px-4 py-2 text-left">Nom du fichier</th>
-                            <th class="px-4 py-2 text-left">Date de génération</th>
+                            <th class="px-4 py-2 text-left">Date de gÃ©nÃ©ration</th>
                             <th class="px-4 py-2 text-left">Taille</th>
                             <th class="px-4 py-2 text-left">Actions</th>
                         </tr>
@@ -82,7 +83,7 @@
                                            download
                                            class="btn-action btn-download">
                                             <i class="fas fa-download mr-1"></i>
-                                            Télécharger
+                                            TÃ©lÃ©charger
                                         </a>
                                     </div>
                                 </td>
@@ -96,10 +97,10 @@
                 <div class="bg-gray-50 rounded-lg p-6 max-w-lg mx-auto">
                     <i class="fas fa-folder-open text-gray-400 text-5xl mb-4"></i>
                     <h3 class="text-lg font-medium text-gray-900 mb-2">Aucun rapport disponible</h3>
-                    <p class="text-gray-500 mb-4">Aucun rapport PDF n'a encore été généré pour ce département.</p>
+                    <p class="text-gray-500 mb-4">Aucun rapport PDF n'a encore Ã©tÃ© gÃ©nÃ©rÃ© pour ce dÃ©partement.</p>
                     <a href="{{ route('departments.pdf.generate') }}" class="btn-save">
                         <i class="fas fa-plus-circle mr-2"></i>
-                        Générer un nouveau rapport
+                        GÃ©nÃ©rer un nouveau rapport
                     </a>
                 </div>
             </div>
@@ -107,93 +108,5 @@
     </div>
 </div>
 
-<style>
-    .btn-save {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.75rem 1.5rem;
-        color: white;
-        background-color: #4a90e2;
-        border-radius: 0.375rem;
-        font-weight: 500;
-        transition: all 0.2s;
-        text-decoration: none;
-    }
 
-    .btn-save:hover {
-        background-color: #357abd;
-        transform: translateY(-1px);
-    }
-
-    .btn-action {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.5rem 1rem;
-        border-radius: 0.375rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        transition: all 0.2s;
-        text-decoration: none;
-    }
-
-    .btn-view {
-        background-color: #4a90e2;
-        color: white;
-    }
-
-    .btn-download {
-        background-color: #64748b;
-        color: white;
-    }
-
-    .btn-view:hover, .btn-download:hover {
-        opacity: 0.9;
-        transform: translateY(-1px);
-    }
-
-    table {
-        border-collapse: separate;
-        border-spacing: 0;
-        width: 100%;
-    }
-
-    th {
-        background-color: #f8fafc;
-        color: #1e293b;
-        font-weight: 600;
-        padding: 0.75rem 1rem;
-        text-align: left;
-        border-bottom: 2px solid #e2e8f0;
-    }
-
-    td {
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid #e2e8f0;
-        vertical-align: top;
-    }
-
-    tr:hover {
-        background-color: #f8fafc;
-    }
-
-    .text-muted {
-        color: #64748b;
-    }
-
-    .hover\:bg-gray-50:hover {
-        background-color: #f8fafc;
-    }
-
-    .text-sm {
-        font-size: 0.875rem;
-    }
-
-    .text-xs {
-        font-size: 0.75rem;
-    }
-
-    .font-medium {
-        font-weight: 500;
-    }
-</style>
 @endsection

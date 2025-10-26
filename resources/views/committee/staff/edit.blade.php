@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -6,183 +6,8 @@
     <title>Modifier l'Utilisateur - {{ $user->name }}</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <style>
-        .form-container {
-            max-width: 800px;
-            margin: 20px auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 20px;
-        }
-
-        .form-header {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .form-header h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #111827;
-        }
-
-        .form-section {
-            margin-bottom: 30px;
-        }
-
-        .form-section h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 20px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #374151;
-            margin-bottom: 8px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            color: #111827;
-            transition: all 0.2s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .form-error {
-            color: #dc2626;
-            font-size: 0.875rem;
-            margin-top: 4px;
-        }
-
-        .switch-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #9ca3af;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #10b981;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            border: none;
-        }
-
-        .btn-cancel {
-            background: #f3f4f6;
-            color: #374151;
-        }
-
-        .btn-submit {
-            background: #3b82f6;
-            color: white;
-        }
-
-        .btn-submit:hover {
-            background: #2563eb;
-        }
-
-        .alert {
-            padding: 12px 16px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 0.875rem;
-        }
-
-        .alert-info {
-            background-color: #e0f2fe;
-            color: #1e40af;
-            border: 1px solid #bfdbfe;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="{{ asset('css/edit.css') }}">
 </head>
 <body class="bg-gray-100">
     <div class="form-container">
@@ -241,9 +66,9 @@
                 <h2>Affectation</h2>
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="department_id">Département</label>
+                        <label for="department_id">DÃ©partement</label>
                         <select id="department_id" name="department_id" class="form-select">
-                            <option value="">Sélectionner un département</option>
+                            <option value="">SÃ©lectionner un dÃ©partement</option>
                             @foreach($departments as $department)
                                 <option value="{{ $department->id }}" 
                                     {{ old('department_id', $user->department_id) == $department->id ? 'selected' : '' }}>
@@ -259,7 +84,7 @@
                     <div class="form-group">
                         <label for="service_id">Service</label>
                         <select id="service_id" name="service_id" class="form-select">
-                            <option value="">Sélectionner un service</option>
+                            <option value="">SÃ©lectionner un service</option>
                             @foreach($services as $service)
                                 <option value="{{ $service->id }}" 
                                     {{ old('service_id', $user->service_id) == $service->id ? 'selected' : '' }}>
@@ -273,11 +98,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="role">Rôle</label>
+                        <label for="role">RÃ´le</label>
                         <select id="role" name="role" class="form-select" required>
-                            <option value="">Sélectionner un rôle</option>
+                            <option value="">SÃ©lectionner un rÃ´le</option>
                             <option value="admin1" {{ $user->isAdmin1() ? 'selected' : '' }}>Administrateur</option>
-                            <option value="admin2" {{ $user->isAdmin2() ? 'selected' : '' }}>Chef de Département</option>
+                            <option value="admin2" {{ $user->isAdmin2() ? 'selected' : '' }}>Chef de DÃ©partement</option>
                             <option value="chef_service" {{ $user->isChefService() ? 'selected' : '' }}>Chef de Service</option>
                             <option value="staff" {{ $user->isStaff() ? 'selected' : '' }}>Staff</option>
                         </select>
@@ -288,9 +113,9 @@
                 </div>
             </div>
 
-            <!-- Paramètres du compte -->
+            <!-- ParamÃ¨tres du compte -->
             <div class="form-section">
-                <h2>Paramètres du Compte</h2>
+                <h2>ParamÃ¨tres du Compte</h2>
                 <div class="form-group">
                     <label>Statut du compte</label>
                     <div class="switch-container">
@@ -320,32 +145,7 @@
         </form>
     </div>
 
-    <script>
-        // Chargement dynamique des services en fonction du département sélectionné
-        document.getElementById('department_id').addEventListener('change', function() {
-            const departmentId = this.value;
-            const serviceSelect = document.getElementById('service_id');
-            const currentServiceId = '{{ old('service_id', $user->service_id) }}';
-            
-            serviceSelect.innerHTML = '<option value="">Sélectionner un service</option>';
-            
-            if (departmentId) {
-                fetch(`/api/departments/${departmentId}/services`)
-                    .then(response => response.json())
-                    .then(services => {
-                        services.forEach(service => {
-                            const option = document.createElement('option');
-                            option.value = service.id;
-                            option.textContent = service.name;
-                            if (service.id == currentServiceId) {
-                                option.selected = true;
-                            }
-                            serviceSelect.appendChild(option);
-                        });
-                    })
-                    .catch(error => console.error('Erreur lors du chargement des services:', error));
-            }
-        });
-    </script>
+    
+    <script src="{{ asset('js/edit.js') }}"></script>
 </body>
 </html>

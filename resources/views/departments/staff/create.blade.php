@@ -1,257 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un employé - {{ auth()->user()->department->name ?? 'Département' }}</title>
+    <title>Ajouter un employÃ© - {{ auth()->user()->department->name ?? 'DÃ©partement' }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('dashboards.css') }}">
-    <style>
-        .form-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            padding: 2rem;
-        }
-
-        .form-title {
-            color: #1e293b;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-section {
-            margin-bottom: 2rem;
-        }
-
-        .form-section-title {
-            color: #64748b;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            color: #1e293b;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .required::after {
-            content: '*';
-            color: #dc2626;
-            margin-left: 0.25rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.625rem 0.875rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .form-select {
-            width: 100%;
-            padding: 0.625rem 2.5rem 0.625rem 0.875rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        .error-message {
-            color: #dc2626;
-            font-size: 0.75rem;
-            margin-top: 0.375rem;
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.625rem 1.25rem;
-            border-radius: 0.375rem;
-            font-weight: 500;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #2563eb;
-        }
-
-        .btn-secondary {
-            background-color: #e5e7eb;
-            color: #4b5563;
-            border: none;
-        }
-
-        .btn-secondary:hover {
-            background-color: #d1d5db;
-        }
-
-        .form-helper {
-            color: #6b7280;
-            font-size: 0.75rem;
-            margin-top: 0.375rem;
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .radio-label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            color: #1e293b;
-            font-size: 0.875rem;
-        }
-
-        .radio-input {
-            width: 1rem;
-            height: 1rem;
-            cursor: pointer;
-        }
-
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: #6b7280;
-            margin-bottom: 2rem;
-            padding: 1rem;
-        }
-
-        .breadcrumb a {
-            color: #3b82f6;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb-separator {
-            color: #d1d5db;
-        }
-
-        .alert {
-            border-radius: 0.375rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .alert-danger {
-            background-color: #fee2e2;
-            border: 1px solid #fecaca;
-            color: #dc2626;
-            margin-bottom: 2rem;
-        }
-
-        .alert-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .alert-message {
-            margin-bottom: 1rem;
-        }
-
-        .error-details {
-            background-color: rgba(0, 0, 0, 0.05);
-            padding: 1rem;
-            border-radius: 0.375rem;
-            margin-top: 1rem;
-        }
-
-        .error-details h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .error-list {
-            list-style-type: disc;
-            margin-left: 1.25rem;
-            font-size: 0.9rem;
-        }
-
-        .error-list li {
-            margin-bottom: 0.25rem;
-        }
-
-        .error-list strong {
-            font-weight: 600;
-        }
-
-        body {
-            background-color: #f1f5f9;
-            font-family: 'Inter', sans-serif;
-            line-height: 1.5;
-        }
-
-        .main-content {
-            min-height: 100vh;
-            padding: 1rem;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="{{ asset('css/create.css') }}">
 </head>
 <body>
     <div class="dashboard-container">
@@ -264,19 +21,19 @@
                 <span class="breadcrumb-separator">/</span>
                 <a href="{{ route('departments.staff.index') }}">
                     <i class="fas fa-users"></i>
-                    Employés
+                    EmployÃ©s
                 </a>
                 <span class="breadcrumb-separator">/</span>
                 <span>
                     <i class="fas fa-user-plus"></i>
-                    Ajouter un employé
+                    Ajouter un employÃ©
                 </span>
             </div>
 
             <div class="form-container">
                 <h1 class="form-title">
                     <i class="fas fa-user-plus"></i>
-                    Ajouter un nouvel employé
+                    Ajouter un nouvel employÃ©
                 </h1>
 
                 @if(session('error'))
@@ -289,7 +46,7 @@
                         
                         @if(session('error_details') && app()->environment('local', 'development'))
                             <div class="error-details">
-                                <h4>Détails de l'erreur :</h4>
+                                <h4>DÃ©tails de l'erreur :</h4>
                                 <ul class="error-list">
                                     <li><strong>Type :</strong> {{ session('error_details')['type'] ?? 'Inconnu' }}</li>
                                     <li><strong>Fichier :</strong> {{ session('error_details')['file'] ?? 'Inconnu' }}</li>
@@ -346,14 +103,14 @@
                             <div class="form-group">
                                 <label for="matricule" class="form-label">Matricule</label>
                                 <input type="text" id="matricule" class="form-input" value="STFxxxx" disabled>
-                                <div class="form-helper">Le matricule sera généré automatiquement lors de la création (format: STF0001)</div>
+                                <div class="form-helper">Le matricule sera gÃ©nÃ©rÃ© automatiquement lors de la crÃ©ation (format: STF0001)</div>
                             </div>
 
                             <!-- Service -->
                             <div class="form-group">
                                 <label for="service_id" class="form-label required">Service</label>
                                 <select id="service_id" name="service_id" class="form-select" required>
-                                    <option value="">Sélectionnez un service</option>
+                                    <option value="">SÃ©lectionnez un service</option>
                                     @foreach($services as $service)
                                         <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>
                                             {{ $service->name }}
@@ -377,7 +134,7 @@
                             <div class="form-group">
                                 <label for="password" class="form-label required">Mot de passe temporaire</label>
                                 <input type="password" id="password" name="password" class="form-input" required>
-                                <div class="form-helper">L'employé devra changer son mot de passe à sa première connexion</div>
+                                <div class="form-helper">L'employÃ© devra changer son mot de passe Ã  sa premiÃ¨re connexion</div>
                                 @error('password')
                                     <div class="error-message">{{ $message }}</div>
                                 @enderror
@@ -425,7 +182,7 @@
                         </a>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i>
-                            Ajouter l'employé
+                            Ajouter l'employÃ©
                         </button>
                     </div>
                 </form>
@@ -433,78 +190,7 @@
         </main>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form');
-            const inputs = form.querySelectorAll('input, select');
-
-            inputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    validateField(this);
-                });
-            });
-
-            form.addEventListener('submit', function(e) {
-                let isValid = true;
-                inputs.forEach(input => {
-                    if (!validateField(input)) {
-                        isValid = false;
-                    }
-                });
-
-                if (!isValid) {
-                    e.preventDefault();
-                }
-            });
-
-            function validateField(input) {
-                const errorDiv = input.nextElementSibling;
-                let isValid = true;
-
-                if (errorDiv && errorDiv.classList.contains('error-message')) {
-                    errorDiv.remove();
-                }
-
-                if (input.required && !input.value) {
-                    showError(input, 'Ce champ est requis');
-                    isValid = false;
-                } else if (input.type === 'email' && input.value) {
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(input.value)) {
-                        showError(input, 'Adresse email invalide');
-                        isValid = false;
-                    }
-                } else if (input.id === 'password' && input.value) {
-                    if (input.value.length < 8) {
-                        showError(input, 'Le mot de passe doit contenir au moins 8 caractères');
-                        isValid = false;
-                    }
-                } else if (input.id === 'password_confirmation' && input.value) {
-                    const password = document.getElementById('password');
-                    if (input.value !== password.value) {
-                        showError(input, 'Les mots de passe ne correspondent pas');
-                        isValid = false;
-                    }
-                }
-
-                if (isValid) {
-                    input.classList.remove('border-red-500');
-                    input.classList.add('border-green-500');
-                } else {
-                    input.classList.remove('border-green-500');
-                    input.classList.add('border-red-500');
-                }
-
-                return isValid;
-            }
-
-            function showError(input, message) {
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'error-message';
-                errorDiv.textContent = message;
-                input.parentNode.insertBefore(errorDiv, input.nextSibling);
-            }
-        });
-    </script>
+    
+    <script src="{{ asset('js/create.js') }}"></script>
 </body>
 </html>

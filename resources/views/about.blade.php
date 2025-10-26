@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>À propos de la ZTF Foundation</title>
+    <title>Ã€ propos de la ZTF Foundation</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('about.css')}}">
 </head>
@@ -44,9 +44,9 @@
 
     <section class="hero-section section-padding">
         <div class="relative z-10">
-            <h1 class="hero-title">À propos du Portail du Personnel ZTF Foundation</h1>
+            <h1 class="hero-title">Ã€ propos du Portail du Personnel ZTF Foundation</h1>
             <p class="hero-subtitle">
-                Ce portail est votre centre névralgique pour tout le personnel de la ZTF Foundation. Accédez aux ressources, connectez-vous avec vos collègues et gérez votre parcours professionnel au sein de notre organisation.
+                Ce portail est votre centre nÃ©vralgique pour tout le personnel de la ZTF Foundation. AccÃ©dez aux ressources, connectez-vous avec vos collÃ¨gues et gÃ©rez votre parcours professionnel au sein de notre organisation.
             </p>
             <a href="registration_form.php" class="cta-button">S'inscrire comme Personnel</a>
         </div>
@@ -55,7 +55,7 @@
     <section class="about-section section-padding">
         <h2 class="about-title">Notre Engagement envers le Personnel</h2>
         <p class="about-text">
-            À la ZTF Foundation, nous comprenons que notre succès dans l'autonomisation des communautés découle directement du dévouement et du bien-être de notre personnel. Ce portail est conçu pour optimiser les opérations internes, améliorer la communication et fournir une plateforme complète pour chaque membre de l'équipe. Nous croyons en la création d'un environnement favorable où le personnel peut s'épanouir, accéder aux informations essentielles et contribuer efficacement à notre mission commune.
+            Ã€ la ZTF Foundation, nous comprenons que notre succÃ¨s dans l'autonomisation des communautÃ©s dÃ©coule directement du dÃ©vouement et du bien-Ãªtre de notre personnel. Ce portail est conÃ§u pour optimiser les opÃ©rations internes, amÃ©liorer la communication et fournir une plateforme complÃ¨te pour chaque membre de l'Ã©quipe. Nous croyons en la crÃ©ation d'un environnement favorable oÃ¹ le personnel peut s'Ã©panouir, accÃ©der aux informations essentielles et contribuer efficacement Ã  notre mission commune.
         </p>
     </section>
 
@@ -65,25 +65,25 @@
             <div class="value-card">
                 <svg class="value-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4ZM12 6C10.34 6 9 7.34 9 9C9 10.66 10.34 12 12 12C13.66 12 15 10.66 15 9C15 7.34 13.66 6 12 6ZM12 14C9.33 14 4 15.34 4 18V19H20V18C20 15.34 14.67 14 12 14Z"></path></svg>
                 <h3 class="value-title">Autonomisation du Personnel</h3>
-                <p class="value-description">Nous fournissons des outils et des ressources intuitifs pour aider chaque membre du personnel à gérer ses informations, accéder aux documents pertinents et suivre son évolution professionnelle au sein de la Fondation.</p>
+                <p class="value-description">Nous fournissons des outils et des ressources intuitifs pour aider chaque membre du personnel Ã  gÃ©rer ses informations, accÃ©der aux documents pertinents et suivre son Ã©volution professionnelle au sein de la Fondation.</p>
             </div>
             <div class="value-card">
                 <svg class="value-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2L1 12H4V21H20V12H23L12 2ZM12 6.12L18.39 12H16V21H13V15H11V21H8V12H5.61L12 6.12Z"></path></svg>
-                <h3 class="value-title">Efficacité & Organisation</h3>
-                <p class="value-description">Ce portail est conçu pour simplifier les processus internes, de l'inscription du personnel à la gestion de l'annuaire, garantissant un accès facile aux données organisationnelles essentielles.</p>
+                <h3 class="value-title">EfficacitÃ© & Organisation</h3>
+                <p class="value-description">Ce portail est conÃ§u pour simplifier les processus internes, de l'inscription du personnel Ã  la gestion de l'annuaire, garantissant un accÃ¨s facile aux donnÃ©es organisationnelles essentielles.</p>
             </div>
             <div class="value-card">
                 <svg class="value-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4ZM12 7C10.34 7 9 8.34 9 10C9 11.66 10.34 13 12 13C13.66 13 15 11.66 15 10C15 8.34 13.66 7 12 7ZM12 15C9.33 15 4 16.34 4 19V20H20V19C20 16.34 14.67 15 12 15Z"></path></svg>
-                <h3 class="value-title">Sécurisé & Connecté</h3>
-                <p class="value-description">Nous priorisons la sécurité des données du personnel et fournissons un environnement connecté où les membres de l'équipe peuvent trouver des informations de contact et interagir professionnellement.</p>
+                <h3 class="value-title">SÃ©curisÃ© & ConnectÃ©</h3>
+                <p class="value-description">Nous priorisons la sÃ©curitÃ© des donnÃ©es du personnel et fournissons un environnement connectÃ© oÃ¹ les membres de l'Ã©quipe peuvent trouver des informations de contact et interagir professionnellement.</p>
             </div>
         </div>
     </section>
 
     <section class="bottom-cta-section section-padding">
-        <h2 class="bottom-cta-title">Prêt à Vous Connecter et à Contribuer ?</h2>
+        <h2 class="bottom-cta-title">PrÃªt Ã  Vous Connecter et Ã  Contribuer ?</h2>
         <p class="bottom-cta-text">
-            Le Portail du Personnel ZTF Foundation est conçu pour vous. Que vous vous inscriviez en tant que nouveau membre de l'équipe ou que vous souhaitiez explorer notre annuaire complet du personnel, votre parcours commence ici.
+            Le Portail du Personnel ZTF Foundation est conÃ§u pour vous. Que vous vous inscriviez en tant que nouveau membre de l'Ã©quipe ou que vous souhaitiez explorer notre annuaire complet du personnel, votre parcours commence ici.
         </p>
         <div class="bottom-cta-buttons">
             <a href="{{route('identification.form')}}" class="cta-button">S'inscrire maintenant</a>
@@ -94,7 +94,7 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-copyright">
-                <p>&copy; <?php echo date("Y"); ?> ZTF Foundation. Tous droits réservés.</p>
+                <p>&copy; <?php echo date("Y"); ?> ZTF Foundation. Tous droits rÃ©servÃ©s.</p>
             </div>
             <div class="footer-links">
                 <a href="{{route('home')}}">Accueil</a>
@@ -115,6 +115,7 @@
         </div>
     </footer>
 
-    <script src="{{asset('aboutResponsive.js')}}"></script>
+    
+    <script src="{{ asset('js/about.js') }}"></script>
 </body>
 </html>

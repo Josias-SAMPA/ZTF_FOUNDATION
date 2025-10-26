@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $service->name }} - Détails du Service</title>
+    <title>{{ $service->name }} - DÃ©tails du Service</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/services/show.css') }}">
 </head>
@@ -31,7 +31,7 @@
     <div class="service-content">
         <div class="service-info-card">
             <div class="card-header">
-                <h2>Informations générales</h2>
+                <h2>Informations gÃ©nÃ©rales</h2>
                 <span class="service-status {{ $service->is_active ? 'active' : 'inactive' }}">
                     {{ $service->is_active ? 'Actif' : 'Inactif' }}
                 </span>
@@ -45,7 +45,7 @@
 
                 <div class="info-item">
                     <label>Localisation</label>
-                    <p>{{ $service->location ?? 'Non spécifiée' }}</p>
+                    <p>{{ $service->location ?? 'Non spÃ©cifiÃ©e' }}</p>
                 </div>
 
                 <div class="info-item">
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="info-item">
-                    <label>Date de création</label>
+                    <label>Date de crÃ©ation</label>
                     <p>{{ $service->created_at->format('d/m/Y') }}</p>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                     </div>
                     <div class="stat-info">
                         <span class="stat-value">{{ $service->users_count ?? 0 }}</span>
-                        <span class="stat-label">Employés</span>
+                        <span class="stat-label">EmployÃ©s</span>
                     </div>
                 </div>
 
@@ -86,7 +86,7 @@
 
         @if($service->users && $service->users->count() > 0)
         <div class="employees-card">
-            <h2>Liste des employés</h2>
+            <h2>Liste des employÃ©s</h2>
             <div class="table-responsive">
                 <table class="employees-table">
                     <thead>
@@ -102,7 +102,7 @@
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->position ?? 'Non spécifié' }}</td>
+                            <td>{{ $user->position ?? 'Non spÃ©cifiÃ©' }}</td>
                             <td>{{ $user->created_at->format('d/m/Y') }}</td>
                         </tr>
                         @endforeach
@@ -114,20 +114,7 @@
     </div>
 </div>
 
-    <script>
-        function confirmDeleteService() {
-            if (confirm('Êtes-vous sûr de vouloir supprimer ce service ?')) {
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '{{ route('departments.services.destroy', ['department' => $department->id, 'service' => $service->id]) }}';
-                form.innerHTML = `
-                    @csrf
-                    @method('DELETE')
-                `;
-                document.body.appendChild(form);
-                form.submit();
-            }
-        }
-    </script>
+    
+    <script src="{{ asset('js/show.js') }}"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -207,7 +207,7 @@
         </div>
     </footer>
 
-    <script src="{{asset('blog.js')}}"></script>
+    
 
     <!-- Fixed Bottom Pagination -->
     <div class="pagination-container">
@@ -219,5 +219,7 @@
             <a href="#" class="pagination-link">Next &raquo;</a>
         </div>
     </div>
+    <script src="{{ asset('js/blog.js') }}"></script>
 </body>
 </html>
+

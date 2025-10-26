@@ -1,159 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un Service - ZTF Foundation</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f3f4f6;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .container {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            width: 100%;
-            max-width: 600px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .header h1 {
-            color: #1f2937;
-            font-size: 1.875rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .header p {
-            color: #6b7280;
-            font-size: 0.875rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            color: #374151;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            transition: border-color 0.2s;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        .help-text {
-            color: #6b7280;
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-cancel {
-            background-color: white;
-            color: #4b5563;
-            border: 1px solid #d1d5db;
-        }
-
-        .btn-cancel:hover {
-            background-color: #f9fafb;
-        }
-
-        .btn-submit {
-            background-color: #4f46e5;
-            color: white;
-            border: none;
-        }
-
-        .btn-submit:hover {
-            background-color: #4338ca;
-        }
-
-        .error {
-            background-color: #fee2e2;
-            border: 1px solid #fecaca;
-            color: #dc2626;
-            padding: 1rem;
-            border-radius: 0.375rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .department-info {
-            background-color: #f3f4f6;
-            padding: 0.75rem;
-            border-radius: 0.375rem;
-            color: #374151;
-            font-size: 0.875rem;
-        }
-
-        @media (max-width: 640px) {
-            .container {
-                padding: 1.5rem;
-            }
-
-            .buttons {
-                flex-direction: column-reverse;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-        }
-    </style>
+    <title>CrÃ©er un Service - ZTF Foundation</title>
+    
+    <link rel="stylesheet" href="{{ asset('css/create_service.css') }}">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Créer un nouveau service</h1>
-            <p>Remplissez les informations ci-dessous pour créer un service</p>
+            <h1>CrÃ©er un nouveau service</h1>
+            <p>Remplissez les informations ci-dessous pour crÃ©er un service</p>
         </div>
 
         @if ($errors->any())
@@ -189,7 +47,7 @@
                     name="description" 
                     rows="4" 
                     required 
-                    placeholder="Décrivez le rôle et les responsabilités du service"
+                    placeholder="DÃ©crivez le rÃ´le et les responsabilitÃ©s du service"
                 >{{ old('description') }}</textarea>
             </div>
 
@@ -203,14 +61,14 @@
                     required 
                     placeholder="Ex: EMP-001"
                 >
-                <p class="help-text">Le manager sera automatiquement assigné à ce service.</p>
+                <p class="help-text">Le manager sera automatiquement assignÃ© Ã  ce service.</p>
             </div>
 
             @if(Auth::user()->isSuperAdmin() || Auth::user()->isAdmin1())
                 <div class="form-group">
-                    <label for="department_id">Département*</label>
+                    <label for="department_id">DÃ©partement*</label>
                     <select name="department_id" id="department_id" required>
-                        <option value="">Sélectionnez un département</option>
+                        <option value="">SÃ©lectionnez un dÃ©partement</option>
                         @foreach($departments as $department)
                             <option 
                                 value="{{ $department->id }}" 
@@ -223,9 +81,9 @@
                 </div>
             @else
                 <div class="form-group">
-                    <label>Département</label>
+                    <label>DÃ©partement</label>
                     <div class="department-info">
-                        {{ Auth::user()->department->name ?? 'Non assigné' }}
+                        {{ Auth::user()->department->name ?? 'Non assignÃ©' }}
                     </div>
                 </div>
             @endif
@@ -235,7 +93,7 @@
                     Annuler
                 </a>
                 <button type="submit" class="btn btn-submit">
-                    Créer le service
+                    CrÃ©er le service
                 </button>
             </div>
         </form>

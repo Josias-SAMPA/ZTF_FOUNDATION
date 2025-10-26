@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\Role;
+use App\Models\User;    
+use App\Models\Role;    
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -163,8 +163,14 @@ class LoginController extends Controller
             $user = Auth::user();
             // Si le matricule est juste CM-HQ-SPAD (première connexion), générer le matricule complet
             if($matricule === 'CM-HQ-SPAD') {
-                $user->matricule = $this->generateMatriculeSPAD();
-                $user->save();
+                // Récupérer l'utilisateur depuis la base de données
+                $userModel = User::find($user->id);
+                if ($userModel) {
+                    $userModel->matricule = $this->generateMatriculeSPAD();
+                    $userModel->save();
+                    // Mettre à jour l'utilisateur authentifié
+                    Auth::setUser($userModel);
+                }
             }
             // Redirection vers l'authentification à deux facteurs
             return redirect()->route('twoFactorAuth')
@@ -262,7 +268,13 @@ class LoginController extends Controller
                 'departement' => "Desole le departement {$deptCode} est deja enregistre.veuillez en choisir un autre"
             ]);
         }
-        $user = Auth::user();
+        $user = User::find(Auth::id());
+        // Ensure we have a User instance before modifying and saving
+        if (!$user) {
+            return redirect()->back()->withErrors([
+                'departement' => 'Utilisateur introuvable. Veuillez vous reconnecter.'
+            ]);
+        }
         $user->matricule = $this->generateMatriculeHeadDepts($deptCode);
         
         $user->save();

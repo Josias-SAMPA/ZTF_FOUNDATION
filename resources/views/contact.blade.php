@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -141,7 +141,9 @@
         </div>
     </footer>
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="{{asset('contact.js')}}"></script>
+    
+    
+    <script src="{{ asset('js/contact.js') }}"></script>
 </body>
 </html>
+

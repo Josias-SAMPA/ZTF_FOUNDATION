@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -8,15 +8,14 @@
     <link rel="stylesheet" href="{{asset('login.css')}}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    <style>
-        
-    </style>
+    
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
 <body>
     <div class="login-container">
         <div class="login-card">
             <h1>ZTF Foundation Login</h1>
-            <p>Connectez-vous à votre compte</p>
+            <p>Connectez-vous Ã  votre compte</p>
 
             @if(session('success'))
                 <div class="alert alert-success">
@@ -58,7 +57,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
-                    Retour à l'accueil
+                    Retour Ã  l'accueil
                 </a>
             </div>
         </div>
@@ -66,3 +65,4 @@
         
 </body>
 </html>
+

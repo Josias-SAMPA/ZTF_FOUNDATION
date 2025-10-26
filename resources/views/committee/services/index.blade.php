@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -6,250 +6,11 @@
     <title>Liste des Services - ZTF Foundation</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: #f3f4f6;
-            color: #1f2937;
-        }
-
-        .page-header {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: white;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .header-title {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            letter-spacing: 2px;
-            text-align: center;
-            text-transform: uppercase;
-            background: linear-gradient(to right, #ffffff, #f0f0f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: titleGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes titleGlow {
-            from {
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            }
-            to {
-                text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-            }
-        }
-
-        .header-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 600px;
-            line-height: 1.5;
-        }
-
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .breadcrumb i {
-            font-size: 0.8rem;
-        }
-
-        .breadcrumb a {
-            color: white;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .breadcrumb a:hover {
-            opacity: 0.8;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #111827;
-        }
-
-        .btn-add {
-            display: inline-flex;
-            align-items: center;
-            background-color: #ffffff;
-            border: 2px solid #3b82f6;
-            color: #3b82f6;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
-        }
-
-        .btn-add:hover {
-            background-color: #3b82f6;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
-        }
-
-        .btn-add-circle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-            height: 24px;
-            background-color: #3b82f6;
-            border-radius: 50%;
-            margin-right: 8px;
-            color: white;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-add:hover .btn-add-circle {
-            background-color: white;
-            color: #3b82f6;
-        }
-
-        .btn-add-text {
-            margin-left: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .alert {
-            padding: 1rem;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-        }
-
-        .alert-success {
-            background-color: #d1fae5;
-            border: 1px solid #34d399;
-            color: #065f46;
-        }
-
-        .alert-error {
-            background-color: #fee2e2;
-            border: 1px solid #f87171;
-            color: #dc2626;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-        th, td {
-            padding: 0.75rem 1rem;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f8fafc;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-            color: #4b5563;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        td {
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        tr:hover {
-            background-color: #f9fafb;
-        }
-
-        .actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn-action {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn-edit {
-            color: #4f46e5;
-        }
-
-        .btn-delete {
-            color: #dc2626;
-        }
-
-        .btn-view {
-            color: #2563eb;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 2rem;
-            color: #6b7280;
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-        }
-    </style>
+    
+    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
 </head>
 <body>
-    <!-- En-tête de la page -->
+    <!-- En-tÃªte de la page -->
     <div class="page-header">
         <div class="header-content">
             <h1 class="header-title">ZTF FOUNDATION</h1>
@@ -288,7 +49,7 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="success-toast-content">
-                    <h4 class="success-toast-title">Succès!</h4>
+                    <h4 class="success-toast-title">SuccÃ¨s!</h4>
                     <p class="success-toast-message">{{ session('success') }}</p>
                 </div>
                 <button class="success-toast-close" onclick="this.parentElement.remove();">
@@ -297,117 +58,9 @@
             </div>
         @endif
 
-        <style>
-            .success-toast {
-                position: fixed;
-                bottom: 24px;
-                right: 24px;
-                background: linear-gradient(to right, #059669, #10B981);
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 12px;
-                box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2), 0 4px 6px -2px rgba(16, 185, 129, 0.1);
-                display: flex;
-                align-items: center;
-                gap: 16px;
-                z-index: 50;
-                min-width: 300px;
-                max-width: 400px;
-                animation: successSlideIn 0.5s ease-out forwards, successGlow 2s ease-in-out infinite;
-            }
+        
 
-            .success-toast-icon {
-                font-size: 1.5rem;
-                color: white;
-                background: rgba(255, 255, 255, 0.2);
-                padding: 8px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .success-toast-content {
-                flex: 1;
-            }
-
-            .success-toast-title {
-                font-weight: 600;
-                font-size: 1rem;
-                margin-bottom: 4px;
-            }
-
-            .success-toast-message {
-                font-size: 0.875rem;
-                opacity: 0.9;
-            }
-
-            .success-toast-close {
-                background: none;
-                border: none;
-                color: white;
-                opacity: 0.7;
-                cursor: pointer;
-                padding: 4px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: opacity 0.2s;
-            }
-
-            .success-toast-close:hover {
-                opacity: 1;
-            }
-
-            @keyframes successSlideIn {
-                from {
-                    transform: translateX(100%) translateY(-50%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0) translateY(0);
-                    opacity: 1;
-                }
-            }
-
-            @keyframes successGlow {
-                0% {
-                    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2), 0 4px 6px -2px rgba(16, 185, 129, 0.1);
-                }
-                50% {
-                    box-shadow: 0 10px 20px -3px rgba(16, 185, 129, 0.3), 0 4px 8px -2px rgba(16, 185, 129, 0.2);
-                }
-                100% {
-                    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2), 0 4px 6px -2px rgba(16, 185, 129, 0.1);
-                }
-            }
-        </style>
-
-        <script>
-            // Animation pour le message de succès
-            document.addEventListener('DOMContentLoaded', function() {
-                const successToast = document.getElementById('success-toast');
-                if (successToast) {
-                    setTimeout(() => {
-                        successToast.style.animation = 'successSlideOut 0.5s ease-out forwards';
-                        setTimeout(() => {
-                            successToast.remove();
-                        }, 500);
-                    }, 5000);
-                }
-            });
-
-            @keyframes successSlideOut {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-            }
-        </script>
+        
 
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white">
@@ -424,7 +77,7 @@
                         </th>
                         @if(!Auth::user()->isAdmin2())
                         <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Département
+                            DÃ©partement
                         </th>
                         @endif
                         <th class="px-6 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -447,7 +100,7 @@
                                         ->where('matricule', 'LIKE', 'MGR-%')
                                         ->first();
                                 @endphp
-                                {{ $manager ? $manager->name : 'Non assigné' }}
+                                {{ $manager ? $manager->name : 'Non assignÃ©' }}
                             </td>
                             @if(!Auth::user()->isAdmin2())
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -459,7 +112,7 @@
                                     <!-- Bouton Voir -->
                                     <a href="{{ route('services.show', $service->id) }}" 
                                        class="action-button view-button" 
-                                       title="Voir les détails">
+                                       title="Voir les dÃ©tails">
                                         <i class="fas fa-eye"></i>
                                         <span class="tooltip">Voir</span>
                                     </a>
@@ -477,7 +130,7 @@
                                         <form action="{{ route('services.destroy', $service->id) }}" 
                                               method="POST" 
                                               class="inline-block"
-                                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce service ?')">
+                                              onsubmit="return confirm('ÃŠtes-vous sÃ»r de vouloir supprimer ce service ?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" 
@@ -491,95 +144,12 @@
                                 </div>
                             </td>
 
-<style>
-.action-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    position: relative;
-    border: none;
-    cursor: pointer;
-    background: none;
-}
 
-.action-button i {
-    font-size: 1rem;
-    transition: transform 0.2s ease;
-}
-
-.view-button {
-    color: #3b82f6;
-}
-
-.view-button:hover {
-    background-color: #dbeafe;
-    color: #1d4ed8;
-}
-
-.edit-button {
-    color: #4f46e5;
-}
-
-.edit-button:hover {
-    background-color: #e0e7ff;
-    color: #4338ca;
-}
-
-.delete-button {
-    color: #dc2626;
-}
-
-.delete-button:hover {
-    background-color: #fee2e2;
-    color: #b91c1c;
-}
-
-.action-button:hover i {
-    transform: scale(1.1);
-}
-
-.tooltip {
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #1f2937;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.action-button:hover .tooltip {
-    opacity: 1;
-    visibility: visible;
-    bottom: -25px;
-}
-
-.tooltip::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 0 4px 4px 4px;
-    border-style: solid;
-    border-color: transparent transparent #1f2937 transparent;
-}
-</style>
                         </tr>
                     @empty
                         <tr>
                             <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                                Aucun service trouvé
+                                Aucun service trouvÃ©
                             </td>
                         </tr>
                     @endforelse
@@ -589,82 +159,7 @@
     </div>
 </div>
 
-<style>
-    .container {
-        max-width: 1200px;
-    }
 
-    table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-
-    th, td {
-        text-align: left;
-        padding: 12px;
-        border-bottom: 1px solid #e2e8f0;
-    }
-
-    th {
-        background-color: #f8fafc;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.05em;
-    }
-
-    tr:hover {
-        background-color: #f8fafc;
-    }
-
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.5rem 1rem;
-        border-radius: 0.375rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .btn-primary {
-        background-color: #3b82f6;
-        color: white;
-    }
-
-    .btn-primary:hover {
-        background-color: #2563eb;
-    }
-
-    .action-icon {
-        width: 1.25rem;
-        height: 1.25rem;
-        cursor: pointer;
-    }
-
-    .action-icon:hover {
-        opacity: 0.75;
-    }
-
-    .alert {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border-radius: 0.375rem;
-    }
-
-    .alert-success {
-        background-color: #d1fae5;
-        border-color: #34d399;
-        color: #065f46;
-    }
-
-    .alert-danger {
-        background-color: #fee2e2;
-        border-color: #f87171;
-        color: #dc2626;
-    }
-</style>
     @if(session('error'))
         <div id="error-toast" class="error-toast" role="alert">
             <div class="error-toast-icon">
@@ -674,69 +169,10 @@
         </div>
     @endif
 
-    <style>
-        .error-toast {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background-color: #fff;
-            color: #dc2626;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 50;
-            border-left: 4px solid #dc2626;
-            animation: slideIn 0.3s ease-out forwards;
-        }
+    
 
-        .error-toast-icon {
-            font-size: 1.25rem;
-            color: #dc2626;
-        }
-
-        .error-toast-message {
-            font-weight: 500;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-    </style>
-
-    <script>
-        // Animation pour le message d'erreur
-        document.addEventListener('DOMContentLoaded', function() {
-            const errorToast = document.getElementById('error-toast');
-            if (errorToast) {
-                setTimeout(() => {
-                    errorToast.style.animation = 'slideOut 0.3s ease-out forwards';
-                    setTimeout(() => {
-                        errorToast.remove();
-                    }, 300);
-                }, 5000);
-            }
-        });
-    </script>
+    
+    <script src="{{ asset('js/index.js') }}"></script>
 </body>
 </html>
+

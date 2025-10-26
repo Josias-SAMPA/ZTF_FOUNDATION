@@ -1,0 +1,59 @@
+﻿.stats-card {
+        @apply rounded-lg p-4 text-white shadow-sm flex-1 min-w-[200px];
+    }
+    
+    .stats-value {
+        @apply text-3xl font-bold mb-1;
+    }
+    
+    .stats-label {
+        @apply text-sm opacity-90;
+    }
+
+    .service-card {
+        @apply bg-white rounded-lg border border-gray-200 overflow-hidden transition-shadow hover:shadow-md;
+    }
+
+    .service-header {
+        @apply p-4 border-b bg-gray-50 flex items-center gap-3;
+    }
+
+    .service-icon {
+        @apply text-blue-500 text-xl;
+    }
+
+    .service-title {
+        @apply text-lg font-semibold text-gray-800;
+    }
+
+    .service-body {
+        @apply p-4;
+    }
+
+    .service-stat {
+        @apply flex justify-between items-center mb-4 pb-2 border-b;
+    }
+
+    .stat-label {
+        @apply text-gray-600;
+    }
+
+    .stat-value {
+        @apply font-semibold text-gray-800;
+    }
+
+    .employee-list {
+        @apply space-y-2;
+    }
+
+    .employee-item {
+        @apply flex justify-between items-center py-1 px-2 rounded hover:bg-gray-50;
+    }
+
+    .employee-name {
+        @apply text-sm text-gray-700;
+    }
+
+    .employee-role {
+        @apply text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded;
+    }

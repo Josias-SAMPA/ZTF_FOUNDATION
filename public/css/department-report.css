@@ -1,0 +1,89 @@
+﻿@page {
+            size: A4;
+            margin: 2cm;
+        }
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 12pt;
+            color: #000;
+            line-height: 1.4;
+            margin: 0;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 150px;
+            height: auto;
+            margin: 0 auto 15px;
+            display: block;
+        }
+        .header h1 {
+            font-size: 16pt;
+            font-weight: bold;
+            margin: 0;
+        }
+        .header p {
+            margin: 5px 0 0;
+            font-size: 11pt;
+            color: #444;
+        }
+        .section-title {
+            font-size: 13pt;
+            font-weight: bold;
+            margin: 25px 0 10px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 4px;
+        }
+        .department-info {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .department-info h3 {
+            margin: 5px 0;
+            font-size: 12pt;
+        }
+        .department-info p {
+            margin: 3px 0;
+            font-size: 11pt;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 11pt;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 6px 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #eaeaea;
+            font-weight: bold;
+            text-align: center;
+        }
+        tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+        .empty-message {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+        }
+        .footer {
+            text-align: center;
+            border-top: 1px solid #000;
+            padding-top: 8px;
+            font-size: 10pt;
+            color: #444;
+            position: fixed;
+            bottom: 1cm;
+            width: 100%;
+        }
