@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
 
 class Committee extends Model
@@ -13,6 +14,6 @@ class Committee extends Model
     ];
 
     public function departments(){
-        return $this->hasMany(Departement::class);
+        return $this->hasMany(Department::class);
     }
 }

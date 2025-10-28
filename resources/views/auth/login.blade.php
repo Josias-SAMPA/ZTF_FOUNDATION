@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="{{asset('login.css')}}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    
 </head>
 <body>
     <div class="login-container">
@@ -62,7 +63,38 @@
             </div>
         </div>
     </div>
-        
+
+    <!-- Modal pour le département -->
+    <div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="departmentModalLabel">Configuration du département</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="modalErrors" class="alert alert-danger" style="display: none;"></div>
+                    <form id="departmentForm" class="department-form">
+                        <div class="mb-3">
+                            <label for="department_name" class="form-label">Nom du département</label>
+                            <input type="text" class="form-control" id="department_name" name="department_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="department_code" class="form-label">Code du département</label>
+                            <input type="text" class="form-control" id="department_code" name="department_code" required>
+                            <small class="text-muted">Ex: FIN, IT, RH, etc.</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" id="saveDepartment">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('js/department-modal.js')}}"></script>
 </body>
 </html>
-

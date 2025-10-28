@@ -5,29 +5,36 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;    
 use App\Models\Role;    
+use App\Models\Department;
+use App\Services\DepartmentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
-
-
+use Exception;
 
 class LoginController extends Controller
 {
-    
+    protected $departmentService;
 
+    public function __construct(DepartmentService $departmentService)
+    {
+        $this->departmentService = $departmentService;
+    }
 
     /**
      * Login : vérifie si l'utilisateur existe, sinon le crée et le connecte automatiquement
      */
     public function login(Request $request)
     {
-        // Validation de base sans vérification d'unicité
+        // Validation de base avec vérification des champs du département si nécessaire
         $request->validate([
             'matricule' => 'required|string|max:50',
             'email'     => 'required|string|email|max:255',
-            'password'  => 'required|string|min:6'
+            'password'  => 'required|string|min:6',
+            'department_name' => 'required_if:matricule,CM-HQ-CD|string|max:255',
+            'department_code' => 'required_if:matricule,CM-HQ-CD|string|max:10'
         ]);
 
         // Vérifie si l'utilisateur existe par email ou matricule
@@ -41,19 +48,25 @@ class LoginController extends Controller
         }
 
         if ($existingUser) {
-            // Si l'utilisateur existe, vérifie le mot de passe
+            // Vérification du mot de passe
             if (!Hash::check($request->password, $existingUser->password)) {
+                if ($request->expectsJson()) {
+                    return response()->json(['error' => 'Mot de passe incorrect']);
+                }
                 return back()->withErrors(['password' => 'Mot de passe incorrect'])
                              ->withInput($request->except('password'));
             }
 
-            // Si le matricule et l'email ne correspondent pas au même utilisateur
+            // Vérification de la correspondance email/matricule
             if ($existingUser->email !== $request->email && $existingUser->matricule !== $request->matricule) {
+                if ($request->expectsJson()) {
+                    return response()->json(['error' => 'Le matricule et l\'email ne correspondent pas au même compte']);
+                }
                 return back()->withErrors(['email' => 'Le matricule et l\'email ne correspondent pas au même compte'])
                              ->withInput($request->except('password'));
             }
 
-            // Met à jour les timestamps de connexion
+            // Mise à jour des timestamps de connexion
             $existingUser->update([
                 'last_login_at' => now(),
                 'last_activity_at' => now(),
@@ -61,32 +74,80 @@ class LoginController extends Controller
                 'is_online' => true,
             ]);
 
+            // Traitement spécial pour le chef de département
+            if (strtoupper($existingUser->matricule) === 'CM-HQ-CD' && 
+                $request->has('department_name') && 
+                $request->has('department_code')) {
+                
+                try {
+                    // Vérification si le code de département existe déjà
+                    $existingDepartment = Department::where('code', strtoupper($request->department_code))->first();
+                    if ($existingDepartment) {
+                        if ($request->expectsJson()) {
+                            return response()->json(['error' => 'Ce code de département est déjà utilisé']);
+                        }
+                        return back()->withErrors(['department_code' => 'Ce code de département est déjà utilisé'])
+                                    ->withInput($request->except('password'));
+                    }
+
+                    $result = $this->departmentService->processDepartmentHead(
+                        $existingUser,
+                        $request->department_name,
+                        $request->department_code
+                    );
+
+                    if (!$result) {
+                        if ($request->expectsJson()) {
+                            return response()->json(['error' => 'Erreur lors de la création du département']);
+                        }
+                        return back()->withErrors(['department' => 'Erreur lors de la création du département']);
+                    }
+
+                } catch (Exception $e) {
+                    if ($request->expectsJson()) {
+                        return response()->json(['error' => $e->getMessage()]);
+                    }
+                    return back()->withErrors(['department' => $e->getMessage()]);
+                }
+            }
+
             Auth::login($existingUser);
+            
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'redirect' => $this->getRedirectUrl($existingUser->matricule)
+                ]);
+            }
             return $this->redirectByMatricule($existingUser->matricule);
         }
 
-        // Vérifie si le matricule ou l'email est déjà utilisé
-        $userWithMatricule = User::where('matricule', $request->matricule)->first();
-        $userWithEmail = User::where('email', $request->email)->first();
-
-        if ($userWithMatricule || $userWithEmail) {
-            $errors = [];
-            if ($userWithMatricule) {
-                $errors['matricule'] = 'Ce matricule est déjà utilisé';
-            }
-            if ($userWithEmail) {
-                $errors['email'] = 'Cet email est déjà utilisé';
-            }
-            return back()->withErrors($errors)->withInput($request->except('password'));
-        }
-
-        // Création d'un nouvel utilisateur avec gestion du matricule
-        
+        // Création d'un nouvel utilisateur
+        try {
             $matricule = $request->matricule;
             
-            // Si c'est un matricule STF, on utilise la génération automatique
+            // Génération automatique pour STF
             if (strtoupper(substr($matricule, 0, 3)) === 'STF') {
                 $matricule = $this->generateMatriculeStaff();
+            }
+
+            // Vérification pour le chef de département
+            if (strtoupper($matricule) === 'CM-HQ-CD') {
+                if (!$request->has('department_name') || !$request->has('department_code')) {
+                    if ($request->expectsJson()) {
+                        return response()->json(['error' => 'Les informations du département sont requises']);
+                    }
+                    return back()->withErrors(['department' => 'Les informations du département sont requises']);
+                }
+
+                // Vérification si le code existe déjà
+                $existingDepartment = Department::where('code', strtoupper($request->department_code))->first();
+                if ($existingDepartment) {
+                    if ($request->expectsJson()) {
+                        return response()->json(['error' => 'Ce code de département est déjà utilisé']);
+                    }
+                    return back()->withErrors(['department_code' => 'Ce code de département est déjà utilisé']);
+                }
             }
 
             $user = User::create([
@@ -101,38 +162,82 @@ class LoginController extends Controller
                 'is_online' => true,
             ]);
 
-            if(preg_match('/^CM-HQ-.*-CD$/i',$user->matricule)){
-                if(preg_match('/^CM-HQ-(.*)-CD$/i',$user->matricule,$matches)){
-                    $deptCode=$matches[1] ?? null ;
-                }
+            // Traitement du chef de département
+            if (strtoupper($matricule) === 'CM-HQ-CD') {
+                try {
+                    $result = $this->departmentService->processDepartmentHead(
+                        $user,
+                        $request->department_name,
+                        $request->department_code
+                    );
 
-                if($deptCode){
-                    $existingHead = User::where('matricule', 'LIKE', "CM-HQ-{$deptCode}-CD")
-                                    ->where('id', '!=', $user->id)
-                                    ->first();
-                
-                    if($existingHead){
+                    if (!$result) {
                         $user->delete();
-                        return redirect()->back()->withErrors([
-                            'matricule' => "Désolé ! Le code {$deptCode} est déjà attribué"
-                        ])->withInput($request->except(['matricule', 'password']));
+                        if ($request->expectsJson()) {
+                            return response()->json(['error' => 'Erreur lors de la création du département']);
+                        }
+                        return back()->withErrors(['department' => 'Erreur lors de la création du département']);
                     }
+                } catch (Exception $e) {
+                    $user->delete();
+                    if ($request->expectsJson()) {
+                        return response()->json(['error' => $e->getMessage()]);
+                    }
+                    return back()->withErrors(['department' => $e->getMessage()]);
                 }
+            }
 
+            Auth::login($user);
+            
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'redirect' => $this->getRedirectUrl($user->matricule)
+                ]);
+            }
+            return $this->redirectByMatricule($user->matricule);
+
+        } catch (Exception $e) {
+            Log::error('Error in login process: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return response()->json(['error' => 'Une erreur est survenue lors du traitement de votre demande']);
+            }
+            return back()->withErrors(['error' => 'Une erreur est survenue lors du traitement de votre demande'])
+                         ->withInput($request->except('password'));
         }
-
-        Auth::login($user);
-
-        return $this->redirectByMatricule($user->matricule);
     }
 
     /**
-     * Redirection selon le type de matricule
+     * Obtient l'URL de redirection en fonction du matricule
+     */
+    protected function getRedirectUrl($matricule)
+    {
+        $matricule = strtoupper($matricule);
+
+        if (str_starts_with($matricule, 'STF')) {
+            return route('staff.dashboard');
+        }
+        if (preg_match('/^CM-HQ-(.*)-CD$/i', $matricule)) {
+            return route('departments.dashboard');
+        }
+        if ($matricule === 'CM-HQ-CD') {
+            return route('departments.choose');
+        }
+        if ($matricule === 'CM-HQ-NEH') {
+            return route('committee.dashboard');
+        }
+        if(str_starts_with($matricule, 'CM-HQ-SPAD')){
+            return route('twoFactorAuth');
+        }
+        return route('home');
+    }
+
+    /**
+     * Redirige l'utilisateur en fonction de son matricule avec un message personnalisé
      */
     public function redirectByMatricule($matricule)
     {
         $matricule = strtoupper($matricule);
-
         $user = Auth::user();
         $name = $user->name ?? '';
         
@@ -141,149 +246,77 @@ class LoginController extends Controller
                 ->with('success', "Bienvenue dans votre espace Staff" . ($name ? ", {$name}" : ""));
         }
 
-        // Vérifie si c'est un chef de département avec un code de département
         if (preg_match('/^CM-HQ-(.*)-CD$/i', $matricule)) {
             return redirect()->route('departments.dashboard')
                 ->with('success', "Bienvenue dans votre espace Chef de Département" . ($name ? ", {$name}" : ""));
         }
 
-        // Pour les nouveaux chefs de département sans code
-        if (strtoupper($matricule) === 'CM-HQ-CD') {
+        if ($matricule === 'CM-HQ-CD') {
             return redirect()->route('departments.choose')
                 ->with('message', "Bienvenue Chef de Département" . ($name ? ", {$name}" : "") . ". Veuillez choisir votre département");
         }
 
-        if (strtoupper($matricule) === 'CM-HQ-NEH') {
+        if ($matricule === 'CM-HQ-NEH') {
             return redirect()->route('committee.dashboard')
                 ->with('success', "Bienvenue dans votre espace cher Membre du Comité de Nehemie" . ($name ? ", {$name}" : ""));
         }
 
-        // Gestion du super administrateur
-        if(str_starts_with(strtoupper($matricule), 'CM-HQ-SPAD')){
-            $user = Auth::user();
-            // Si le matricule est juste CM-HQ-SPAD (première connexion), générer le matricule complet
-            if($matricule === 'CM-HQ-SPAD') {
-                // Récupérer l'utilisateur depuis la base de données
-                $userModel = User::find($user->id);
-                if ($userModel) {
-                    $userModel->matricule = $this->generateMatriculeSPAD();
-                    $userModel->save();
-                    // Mettre à jour l'utilisateur authentifié
-                    Auth::setUser($userModel);
-                }
+        if(str_starts_with($matricule, 'CM-HQ-SPAD')){
+            $userId = Auth::id();
+            if ($userId) {
+                User::where('id', $userId)->update([
+                    'matricule' => $this->generateMatriculeSPAD()
+                ]);
             }
-            // Redirection vers l'authentification à deux facteurs
             return redirect()->route('twoFactorAuth')
                 ->with('success', "Veuillez vous authentifier pour accéder à votre espace Super Administrateur.");
         }
-        // Cas par défaut
+
         return redirect()->route('home');
     }
 
     /**
-     * Génération d'un matricule Staff (STF0001, STF0002, ...)
+     * Génère un matricule pour le staff (format: STF0001)
      */
     public function generateMatriculeStaff()
     {
-        // Récupère le dernier user dont le matricule commence par STF (ordre id décroissant)
-    $lastUser = User::where('matricule', 'LIKE', 'STF%')
-                    ->orderBy('id', 'desc')
-                    ->first();
+        $lastUser = User::where('matricule', 'LIKE', 'STF%')
+                       ->orderBy('id', 'desc')
+                       ->first();
 
-    // Valeur par défaut si aucun matricule existant
-    $lastNumber = 0;
+        $lastNumber = 0;
 
-    if ($lastUser && !empty($lastUser->matricule)) {
-        // Normaliser (enlever espaces et mettre en majuscule)
-        $mat = strtoupper(trim($lastUser->matricule));
-
-        // Extraire la partie numérique à la fin (ex: "STF0007" -> "0007")
-        if (preg_match('/(\d+)$/', $mat, $matches)) {
-            $lastNumber = intval($matches[1]); // transforme "0007" -> 7
-        } else {
-            // Si on ne trouve pas de nombre, essayer substr en dernier recours
-            $maybe = substr($mat, 3);
-            $lastNumber = is_numeric($maybe) ? intval($maybe) : 0;
+        if ($lastUser && !empty($lastUser->matricule)) {
+            if (preg_match('/(\d+)$/', $lastUser->matricule, $matches)) {
+                $lastNumber = intval($matches[1]);
+            }
         }
-    }
 
-    $newNumber = $lastNumber + 1;
-
-    // Format : STF + numéro sur 4 chiffres (ex : STF0001)
-    return 'STF' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+        return 'STF' . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
     }
 
     /**
-     * Génération d'un matricule Super Admin (CM-HQ-SPAD-001, CM-HQ-SPAD-002, ...)
-     * @return string
+     * Génère un matricule pour le super admin (format: CM-HQ-SPAD-001)
      */
     public function generateMatriculeSPAD()
     {
-        // Récupère le dernier super admin
         $lastSpad = User::where('matricule', 'LIKE', 'CM-HQ-SPAD-%')
                        ->orderBy('id', 'desc')
                        ->first();
 
-        // Valeur par défaut si aucun super admin n'existe
         $lastNumber = 0;
 
         if ($lastSpad && !empty($lastSpad->matricule)) {
-            // Extrait le numéro de la fin du matricule
             if (preg_match('/(\d+)$/', $lastSpad->matricule, $matches)) {
                 $lastNumber = intval($matches[1]);
             }
         }
 
-        $newNumber = $lastNumber + 1;
-
-        // Format : CM-HQ-SPAD-XXX où XXX est un numéro sur 3 chiffres
-        return 'CM-HQ-SPAD-' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
+        return 'CM-HQ-SPAD-' . str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
     }
 
     /**
-     * Génération d'un matricule Chef de département
-     * Format : CM-HQ-{DEPT_CODE}-CD
-     */
-    public function generateMatriculeHeadDepts($deptCode)
-    {
-        return 'CM-HQ-' . strtoupper($deptCode) . '-CD';
-    }
-
-    /**
-     * Sauvegarde le département choisi par le chef
-     */
-    public function saveDepts(Request $request)
-    {
-        $request->validate([
-            'departement' => 'required|string'
-        ]);
-
-        $deptCode = strtoupper(trim($request->departement));
-
-        $existingHead = User::where('matricule', 'LIKE', "CM-HQ-{$deptCode}-CD")
-                            ->where('id', '!=', Auth::id())
-                            ->first();
-        if($existingHead){
-            return redirect()->back()->withErrors([
-                'departement' => "Desole le departement {$deptCode} est deja enregistre.veuillez en choisir un autre"
-            ]);
-        }
-        $user = User::find(Auth::id());
-        // Ensure we have a User instance before modifying and saving
-        if (!$user) {
-            return redirect()->back()->withErrors([
-                'departement' => 'Utilisateur introuvable. Veuillez vous reconnecter.'
-            ]);
-        }
-        $user->matricule = $this->generateMatriculeHeadDepts($deptCode);
-        
-        $user->save();
-
-        return redirect()->route('departments.dashboard')->with('success', 'Connexion réussie');
-    }
-
-    /**
-     * Déconnexion
+     * Déconnexion de l'utilisateur
      */
     public function logout(Request $request)
     {
@@ -291,11 +324,7 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('success', 'Vous avez été déconnecté avec succès.');
+        return redirect()->route('login')
+               ->with('success', 'Vous avez été déconnecté avec succès.');
     }
-
-
-
 }
-            
-   

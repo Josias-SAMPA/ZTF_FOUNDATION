@@ -41,8 +41,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
@@ -53,7 +53,7 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $middlewareAliases = [
-    'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth' => \App\Http\Middleware\Authenticate::class,
     'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
     'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
     'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
@@ -67,5 +67,14 @@ class Kernel extends HttpKernel
     'department.access' => \App\Http\Middleware\DepartmentAccessMiddleware::class,
     'superadmin' => \App\Http\Middleware\CheckSuperAdmin::class,
     'check.department' => \App\Http\Middleware\CheckDepartmentAccess::class,
+    ];
+
+    /**
+     * The commands to be registered.
+     *
+     * @var array
+     */
+    protected $commands = [
+        \App\Console\Commands\MakeServiceCommand::class,
     ];
 }

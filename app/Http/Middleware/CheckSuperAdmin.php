@@ -17,11 +17,11 @@ class CheckSuperAdmin
     public function handle(Request $request, Closure $next): Response
     {
         // Vérifier si l'utilisateur est connecté
-        if (!auth()->check()) {
+        if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Veuillez vous connecter pour accéder à cette section.');
         }
 
-        $user = auth()->user();
+        $user = Auth::user();
 
         // Vérifier si l'utilisateur est super administrateur
         if ($user->isSuperAdmin()) {

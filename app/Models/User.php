@@ -96,7 +96,7 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_users', 'user_id', 'role_id')
-                    ->select('roles.id', 'roles.name', 'roles.code', 'roles.display_name', 'roles.grade');
+                    ->select('roles.id', 'roles.name', 'roles.code', 'roles.display_name', 'roles.grade', 'roles.description', 'roles.created_at', 'roles.updated_at', 'roles.guard_name');
     }
 
     public function permissions(){

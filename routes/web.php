@@ -36,6 +36,9 @@ Route::get('/login', function () {
 // Route pour traiter la soumission du formulaire
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
+// Route pour valider le département
+Route::post('/department/validate', [LoginController::class, 'validateDepartment'])->name('department.validate');
+
 Route::middleware('auth')->group(function() {
     Route::get('/departments/dashboard', function() {
         return view('departments.dashboard');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
 
 class FinalRegisterUser extends Model
@@ -118,7 +119,7 @@ class FinalRegisterUser extends Model
         ];
     }
         public function Departement(){
-        return $this->belongsTo(Departement::class);
+        return $this->belongsTo(Department::class);
     }
 
     public function service(){
@@ -126,6 +127,6 @@ class FinalRegisterUser extends Model
     }
 
     public function headDepartment(){
-        return $this->hasMany(Departement::class,'head_id');
+        return $this->hasMany(Department::class,'head_id');
     }
 }

@@ -3,9 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class TrackUserActivity
 {
