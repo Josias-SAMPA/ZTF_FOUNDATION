@@ -5,11 +5,11 @@
 <div class="edit-service-container">
     <div class="page-header">
         <div class="header-content">
-            <h1>Modifier le service</h1>
+            <h1>Modification du service</h1>
             <nav class="breadcrumb">
                 <a href="{{ route('departments.dashboard') }}">Tableau de bord</a> /
                 <a href="{{ route('departments.services.index', ['department' => $department->id]) }}">Services</a> /
-                <span>Modifier {{ $service->name }}</span>
+                <span>Modification de « {{ $service->name }} »</span>
             </nav>
         </div>
     </div>
@@ -33,30 +33,32 @@
             </div>
 
             <div class="form-group">
-                <label for="description">Description du service</label>
+                <label for="description">Description détaillée du service</label>
                 <textarea id="description" 
                           name="description" 
                           class="form-control @error('description') is-invalid @enderror"
-                          rows="4">{{ old('description', $service->description) }}</textarea>
+                          rows="4"
+                          placeholder="Décrivez les fonctions et responsabilités du service">{{ old('description', $service->description) }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-group">
-                <label for="location">Localisation</label>
+                <label for="location">Localisation du service</label>
                 <input type="text" 
                        id="location" 
                        name="location" 
                        class="form-control @error('location') is-invalid @enderror"
-                       value="{{ old('location', $service->location) }}">
+                       value="{{ old('location', $service->location) }}"
+                       placeholder="Bureau, étage, bâtiment...">
                 @error('location')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-group">
-                <label for="phone">TÃ©lÃ©phone</label>
+                <label for="phone">Téléphone</label>
                 <input type="tel" 
                        id="phone" 
                        name="phone" 
@@ -86,15 +88,15 @@
                        class="form-check-input"
                        value="1" 
                        {{ old('is_active', $service->is_active) ? 'checked' : '' }}>
-                <label class="form-check-label" for="is_active">Service actif</label>
+                <label class="form-check-label" for="is_active">Activer le service</label>
             </div>
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Enregistrer les modifications
+                    <i class="fas fa-save"></i> Sauvegarder les modifications
                 </button>
                 <a href="{{ route('departments.services.show', $service->id) }}" class="btn btn-secondary">
-                    <i class="fas fa-times"></i> Annuler
+                    <i class="fas fa-arrow-left"></i> Retour sans modification
                 </a>
             </div>
         </form>

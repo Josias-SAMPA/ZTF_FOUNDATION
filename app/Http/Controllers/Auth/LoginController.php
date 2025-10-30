@@ -320,6 +320,10 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
+        if (Auth::check()) {
+            User::where('id', Auth::id())->update(['is_online' => false]);
+        }
+        
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

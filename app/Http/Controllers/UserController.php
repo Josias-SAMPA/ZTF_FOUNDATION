@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @OA\Info(
@@ -77,8 +78,26 @@ class UserController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
         
-        $users = User::with('services', 'departments')->get();
+        if ($user->isSuperAdmin() || $user->isAdmin1()) {
+            $users = User::with('services', 'departments')->get();
+        } else {
+            // Pour les chefs de département, vérifier le code dans le matricule
+            if (preg_match('/^CM-HQ-(.*)-CD$/i', $user->matricule, $matches)) {
+                $deptCode = $matches[1];
+                $users = User::with('services', 'departments')
+                    ->whereHas('departments', function($query) use ($deptCode) {
+                        $query->where('code', $deptCode);
+                    })
+                    ->get();
+            } else {
+                $users = User::with('services', 'departments')
+                    ->where('department_id', $user->department_id)
+                    ->get();
+            }
+        }
+        
         return view('staff.index', compact('users'));
     }
 
@@ -93,7 +112,7 @@ class UserController extends Controller
     }
 
     public function edit(){
-        $user = auth()->user();
+        $user = Auth::user();
         return view('profile.edit', compact('user'));
    }
 
@@ -142,10 +161,9 @@ class UserController extends Controller
             'password' => 'required',
         ], [
             'matricule.regex' => "Le matricule doit être au format : CM-HQ-nomdepartement-numerosequentiel (ex: CM-HQ-IT-001)"
-        
         ]);
-        $user=Auth::user();
 
+        // Utilisez l'instance de User passée en paramètre au lieu de créer une nouvelle
         $user->update($data);
         return redirect(route('users.update'));
     }
@@ -287,7 +305,41 @@ class UserController extends Controller
     }
 
     public function assignRoleFromMatricule(User $user){
-        $this->syncRoleFromMatricule();
+        $this->syncRoleFromMatricule($user);
         return back()->with('success',"Role a ete assigne automatiquement a  {$user->name} avec succes");
+    }
+
+    /**
+     * Synchronise le rôle de l'utilisateur en fonction de son matricule
+     */
+    private function syncRoleFromMatricule(User $user)
+    {
+        // Pour les chefs de département (CD)
+        if (preg_match('/^CM-HQ-(.*)-CD$/i', $user->matricule)) {
+            $role = Role::where('name', 'Chef de Département')->first();
+            if (!$role) {
+                $role = Role::create([
+                    'name'=>'department-head',
+                    'display_name'=>'Chef de Département',
+                    'description'=>'Role pour les chefs de département',
+                    'guard_name'=>'web',
+                    'grade'=>2
+                ]);
+            }
+            $user->roles()->sync([$role->id]);
+        }
+        // Pour les employés normaux
+        elseif (preg_match('/^CM-HQ-[A-Za-z]+-\d{3}$/i', $user->matricule)) {
+            $role = Role::where('name', 'Employé')->first();
+            if (!$role) {
+                $role = Role::create([
+                    'name'=>'Employe',
+                    'display_name'=>'Ouvrier',
+                    'description'=>'Role par defaut pour les employes',
+                    'guard_name'=>'web',
+                ]);
+            }
+            $user->roles()->sync([$role->id]);
+        }
     }
 }

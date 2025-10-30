@@ -1,106 +1,126 @@
-﻿    <link rel="stylesheet" href="{{ asset('css/create.css') }}">
-@extends('layouts.app')
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création d'un nouveau service - {{ config('app.name') }}</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/create.css') }}">
+    <style>
+        .back-button {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{{ route('departments.dashboard') }}" class="btn btn-secondary back-button">
+        <i class="fas fa-arrow-left"></i>
+        Retour au tableau de bord
+    </a>
 
-@section('content')
-<div class="create-service-container">
-    <div class="page-header">
-        <div class="header-content">
-            <h1>CrÃ©er un nouveau service</h1>
-            <nav class="breadcrumb">
-                <a href="{{ route('departments.dashboard') }}">Tableau de bord</a> /
-                <a href="{{ route('departments.services.index', ['department' => $department->id]) }}">Services</a> /
-                <span>Nouveau service</span>
-            </nav>
-        </div>
-    </div>
-
-    <div class="form-card">
-        <form action="{{ route('departments.services.store') }}" method="POST" class="service-form">
+    <h1>Création d'un nouveau service</h1>
+    
+    <div class="form-container">
+        <form action="{{ route('departments.services.store', ['department' => $department->id]) }}" method="POST">
             @csrf
 
             <div class="form-group">
-                <label for="name">Nom du service <span class="required">*</span></label>
+                <label class="form-label" for="name">
+                    Nom du service <span class="required">*</span>
+                </label>
                 <input type="text" 
                        id="name" 
                        name="name" 
-                       class="form-control @error('name') is-invalid @enderror"
+                       class="form-input @error('name') error @enderror" 
                        value="{{ old('name') }}" 
                        required>
                 @error('name')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-group">
-                <label for="description">Description du service</label>
+                <label class="form-label" for="description">
+                    Description détaillée du service
+                </label>
                 <textarea id="description" 
                           name="description" 
-                          class="form-control @error('description') is-invalid @enderror"
-                          rows="4">{{ old('description') }}</textarea>
+                          class="form-input form-textarea @error('description') error @enderror">{{ old('description') }}</textarea>
                 @error('description')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-group">
-                <label for="location">Localisation</label>
+                <label class="form-label" for="location">
+                    Localisation (facultatif)
+                </label>
                 <input type="text" 
                        id="location" 
                        name="location" 
-                       class="form-control @error('location') is-invalid @enderror"
+                       class="form-input @error('location') error @enderror" 
                        value="{{ old('location') }}">
                 @error('location')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-group">
-                <label for="phone">TÃ©lÃ©phone</label>
+                <label class="form-label" for="phone">
+                    Téléphone (facultatif)
+                </label>
                 <input type="tel" 
                        id="phone" 
                        name="phone" 
-                       class="form-control @error('phone') is-invalid @enderror"
+                       class="form-input @error('phone') error @enderror" 
                        value="{{ old('phone') }}">
                 @error('phone')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="form-group">
-                <label for="email">Email du service</label>
-                <input type="email" 
-                       id="email" 
-                       name="email" 
-                       class="form-control @error('email') is-invalid @enderror"
-                       value="{{ old('email') }}">
-                @error('email')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div class="checkbox-list">
+                <div class="checkbox-item">
+                    <input type="checkbox" 
+                           id="is_active" 
+                           name="is_active" 
+                           value="1" 
+                           {{ old('is_active') ? 'checked' : '' }}>
+                    <label for="is_active">Activer le service</label>
+                </div>
             </div>
 
-            <div class="form-check">
-                <input type="checkbox" 
-                       id="is_active" 
-                       name="is_active" 
-                       class="form-check-input"
-                       value="1" 
-                       {{ old('is_active') ? 'checked' : '' }}>
-                <label class="form-check-label" for="is_active">Service actif</label>
-            </div>
-
-            <div class="form-actions">
+            <div class="btn-group">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> CrÃ©er le service
+                    <i class="fas fa-save"></i>
+                    Enregistrer le service
                 </button>
-                <a href="{{ route('departments.services.index', ['department' => $department->id]) }}" class="btn btn-secondary">
-                    <i class="fas fa-times"></i> Annuler
+                <a href="{{ route('departments.services.index', ['department' => $department->id]) }}" 
+                   class="btn btn-secondary">
+                    <i class="fas fa-times"></i>
+                    Annuler la création
                 </a>
             </div>
         </form>
+    <!-- Notification de succès -->
+    @if(session('success'))
+    <div class="notification success">
+        {{ session('success') }}
     </div>
+    @endif
 </div>
 
-@push('styles')
-
-@endpush
-@endsection
+    <!-- Scripts -->
+    <script src="{{ asset('js/create.js') }}"></script>
+</body>
+</html>

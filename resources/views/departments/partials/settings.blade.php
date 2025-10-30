@@ -48,7 +48,7 @@
             </form>
         </div>
 
-        <!-- ParamÃ¨tres de Notification -->
+        <!-- Paramètres de notification -->
         <div class="settings-card">
             <h3>
                 <i class="fas fa-bell"></i>
@@ -57,24 +57,24 @@
             <form class="settings-form" action="{{ route('departments.update.notifications') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label class="form-label">Notifications par email</label>
+                    <label class="form-label">Notifications par e-mail</label>
                     <div style="display: flex; align-items: center; gap: 1rem;">
                         <label class="toggle-switch">
                             <input type="checkbox" name="email_notifications" checked>
                             <span class="toggle-slider"></span>
                         </label>
-                        <span>ActivÃ©</span>
+                        <span>Activé</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">FrÃ©quence des rapports</label>
+                    <label class="form-label">Fréquence des rapports</label>
                     <select class="form-select" name="report_frequency">
                         <option value="daily">Quotidien</option>
                         <option value="weekly">Hebdomadaire</option>
                         <option value="monthly">Mensuel</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-save">Enregistrer les prÃ©fÃ©rences</button>
+                <button type="submit" class="btn-save">Enregistrer les préférences</button>
             </form>
         </div>
 
@@ -104,7 +104,7 @@
             </form>
         </div>
 
-        <!-- ParamÃ¨tres d'Apparence -->
+        <!-- Paramètres d'apparence -->
         <div class="settings-card">
             <h3>
                 <i class="fas fa-paint-brush"></i>
@@ -113,21 +113,21 @@
             <form class="settings-form" action="{{ route('departments.update.appearance') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label class="form-label">ThÃ¨me</label>
+                    <label class="form-label">Thème de l'interface</label>
                     <select class="form-select" name="theme">
-                        <option value="light">Clair</option>
-                        <option value="dark">Sombre</option>
-                        <option value="system">SystÃ¨me</option>
+                        <option value="light">Thème clair</option>
+                        <option value="dark">Thème sombre</option>
+                        <option value="system">Utiliser les préférences système</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Langue</label>
+                    <label class="form-label">Langue de l'interface</label>
                     <select class="form-select" name="language">
-                        <option value="fr">FranÃ§ais</option>
+                        <option value="fr">Français</option>
                         <option value="en">English</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-save">Appliquer</button>
+                <button type="submit" class="btn-save">Appliquer les changements</button>
             </form>
         </div>
     </div>

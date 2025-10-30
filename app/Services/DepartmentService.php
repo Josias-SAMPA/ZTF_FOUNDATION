@@ -50,7 +50,8 @@ class DepartmentService
             $department = Department::create([
                 'name' => $name,
                 'code' => strtoupper($code),
-                'description' => 'Département ' . $name . ' - ' . strtoupper($code)
+                'description' => 'Département ' . $name . ' - ' . strtoupper($code),
+                'head_id' => $user->id
             ]);
 
             // Mettre à jour l'utilisateur

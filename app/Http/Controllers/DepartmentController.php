@@ -22,7 +22,8 @@ class DepartmentController extends Controller
             $department = Department::find($user->department_id);
             $departmentUsers = User::where('department_id', $user->department_id)->count();
             $departmentServices = Service::where('department_id', $user->department_id)->count();
-            $recentActivities = User::where('department_id', $user->department_id)
+            $recentActivities = User::with('user')
+                                   ->where('department_id', $user->department_id)
                                    ->orderBy('last_activity_at', 'desc')
                                    ->limit(10)
                                    ->get();

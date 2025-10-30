@@ -83,6 +83,9 @@ class User extends Authenticatable
         return $this->belongsTo(Committee::class,'department_id');
     }
 
+    public function user(){
+        return $this->hasMany(Department::class,'head_id');
+    }
     /**
      * Vérifie si l'utilisateur a un rôle spécifique avec un grade optionnel
      * 

@@ -102,6 +102,22 @@
             padding: 2rem;
         }
 
+        /* Section Display Styles */
+        .main-content section {
+            display: none;
+        }
+
+        .main-content section:first-child,
+        .main-content section.active {
+            display: block;
+        }
+
+        /* Navigation Active State */
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
         .page-header {
             margin-bottom: 2rem;
         }

@@ -26,6 +26,7 @@ use App\Http\Controllers\RoleAssignmentController;
 use App\Http\Controllers\FirstRegistrationController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Middleware\CheckDepartmentAccess;
 
 
 // Route pour afficher le formulaire de connexion
@@ -199,8 +200,8 @@ Route::get('/committee/departments/manage', [ComiteController::class, 'manage'])
     });
     Route::post('/auth/login',[LoginController::class,'login'])->name('staff.store');
     Route::post('departments/Save-Depts',[LoginController::class,'saveDepts'])->name('departments.saveDepts');
-    // Toutes les routes de service avec le middleware en utilisant le chemin complet de la classe
-    Route::middleware(['auth'])->group(function () {
+    // Toutes les routes de service avec les middlewares d'authentification et de contrôle d'accès par département
+    Route::middleware(['auth', \App\Http\Middleware\CheckDepartmentAccess::class])->group(function () {
         Route::resource('services', ServiceController::class)->names([
             'index' => 'services.index',
             'create' => 'services.create',
@@ -210,6 +211,17 @@ Route::get('/committee/departments/manage', [ComiteController::class, 'manage'])
             'update' => 'services.update',
             'destroy' => 'services.destroy',
         ]);
+        
+        // Routes du staff avec contrôle d'accès par département
+        Route::prefix('staff')->name('staff.')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/create', [UserController::class, 'create'])->name('create');
+            Route::post('/', [UserController::class, 'store'])->name('store');
+            Route::get('/{user}', [UserController::class, 'show'])->name('show');
+            Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+            Route::put('/{user}', [UserController::class, 'update'])->name('update');
+            Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+        });
     });
     Route::get('/superAdmin/dashboard',[SuperAdminController::class,'dashboard'])->name('dashboard');
 

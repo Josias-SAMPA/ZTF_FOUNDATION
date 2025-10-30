@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('dashboards.css') }}">
     
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/services-overview.css') }}">
 </head>
 <body>
     @if(Auth::user()->isAdmin2())
@@ -23,11 +24,11 @@
                     <div class="user-name">{{ Auth::user()->name }}</div>
                     <div class="user-role">
                         @if(Auth::user()->isSuperAdmin())
-                            <b>Super Administrateur</b>
+                            <b>Super-administrateur</b>
                         @elseif(Auth::user()->isAdmin1())
                             <b>Administrateur</b>
                         @elseif(Auth::user()->isAdmin2())
-                            <b>Chef de DÃ©partement</b>
+                            <b>Chef de département</b>
                         @else
                             <b>Utilisateur</b>
                         @endif
@@ -59,7 +60,7 @@
                         <li class="nav-item">
                             <a href="#" class="nav-link" onclick="showSection('settings')">
                                 <i class="fas fa-cog"></i>
-                                ParamÃ¨tres
+                                Paramètres
                             </a>
                         </li>
                         <li class="nav-item">
@@ -71,8 +72,8 @@
 
                          <li class="nav-item">
                             <a href="#" class="nav-link" onclick="showSection('historydownloads')">
-                                <i class="fas fa-chart-bar"></i>
-                                Historique des<br>telechargements
+                                <i class="fas fa-history"></i>
+                                Historique des<br>téléchargements
                             </a>
                         </li>
                     @endif
@@ -93,7 +94,7 @@
                             @csrf
                             <i class="fas fa-sign-out-alt"></i>
                             <button type="submit" style="background: none; border: none; color: inherit; padding: 0; cursor: pointer;">
-                                DÃ©connexion
+                                Déconnexion
                             </button>
                         </form>
                     </li>
@@ -106,16 +107,16 @@
             <section id="section-dashboard">
                 <div class="page-header">
                     <h1 class="page-title">Tableau de bord</h1>
-                    <div class="breadcrumb">Tableau de bord/Accueil</div>
+                    <div class="breadcrumb">Tableau de bord / Accueil</div>
                 </div>
                 @if( Auth::user()->department && (Auth::user()->isAdmin2() && Auth::user()->department->head_id === Auth::user()->id))
                 <!-- Stats Grid -->
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-card-title">EmployÃ©s du DÃ©partement</div>
+                        <div class="stat-card-title">Effectif du département</div>
                         <div class="stat-card-value">{{ $departmentUsers ?? '0' }}</div>
                         <div class="stat-card-info">
-                            Dans votre dÃ©partement
+                            Employés actifs
                         </div>
                     </div>
                     <div class="stat-card">
@@ -133,12 +134,12 @@
                         </div>
                         <div class="stat-card-info">
                             <span class="active-services">
-                                {{ $activeServicesCount }} actifs
+                                {{ $activeServicesCount }} en activité
                             </span>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-card-title">DÃ©partement</div>
+                        <div class="stat-card-title">Département</div>
                         <div class="stat-card-value">
                             {{ Auth::user()->department ? Auth::user()->department->name : 'N/A' }}
                         </div>
@@ -150,24 +151,24 @@
                 @else
                 <div class="no-access-message" style="text-align: center; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                     <i class="fas fa-lock" style="font-size: 3rem; color: #718096; margin-bottom: 1rem;"></i>
-                    <h2 style="color: #2d3748; margin-bottom: 0.5rem;">AccÃ¨s Restreint</h2>
-                    <p style="color: #718096;">Vous n'Ãªtes pas actuellement chef de ce dÃ©partement. Seul votre profil est accessible.</p>
+                    <h2 style="color: #2d3748; margin-bottom: 0.5rem;">Accès restreint</h2>
+                    <p style="color: #718096;">Vous n'êtes pas actuellement chef de ce département. Seul votre profil est accessible.</p>
                 </div>
                 @endif
                 <!-- Quick Actions -->
                 <div class="actions-grid">
-                    @if(Auth::user()->department && (Auth::user()->isAdmin2() || Auth::user()->isSuperAdmin() || Auth::user()->isAdmin1()))
+                    @if(Auth::user()->department && (Auth::user()->isAdmin2() || Auth::user()->isSuperAdmin() || Auth::user()->isAdmin1()) && Auth::user()->department->head_id === Auth::user()->id)
                         <a href="{{route('departments.staff.create')}}" class="action-card">
                             <i class="fas fa-user-plus action-icon"></i>
-                            <h3>Ajouter un employÃ©</h3>
-                            <p class="action-desc">Ajouter un nouvel employÃ© au dÃ©partement</p>
+                            <h3>Ajouter un employé</h3>
+                            <p class="action-desc">Intégrer un nouvel employé au département</p>
                         </a>
                     
                         @if(Auth::user()->department)
                             <a href="{{route('departments.services.create', ['department' => Auth::user()->department->id])}}" class="action-card">
                                 <i class="fas fa-folder-plus action-icon"></i>
-                                <h3>Nouveau Service</h3>
-                                <p class="action-desc">CrÃ©er un nouveau service dans le dÃ©partement</p>
+                                <h3>Nouveau service</h3>
+                                <p class="action-desc">Créer un nouveau service dans le département</p>
                             </a>
                         @endif
                     @endif
@@ -175,22 +176,22 @@
                     @if(Auth::user()->department)
                         <a href="{{ route('departments.services.index', ['department' => Auth::user()->department->id]) }}" class="action-card">
                             <i class="fas fa-sitemap action-icon"></i>
-                            <h3>GÃ©rer les Services</h3>
-                            <p class="action-desc">Voir et gÃ©rer tous les services du dÃ©partement</p>
+                            <h3>Gérer les services</h3>
+                            <p class="action-desc">Administrer les services du département</p>
                         </a>
                     @endif
 
                     <a href="#" class="action-card" onclick="showSection('reports')">
                         <i class="fas fa-chart-line action-icon"></i>
-                        <h3>Rapports des Services</h3>
-                        <p class="action-desc">Statistiques et rapports dÃ©taillÃ©s</p>
+                        <h3>Rapports d'activité</h3>
+                        <p class="action-desc">Statistiques et analyses détaillées</p>
                     </a>
                 </div>
                 
                 <!-- Services Overview -->
                 <div class="services-overview">
                     <div class="section-header">
-                        <h2 class="section-title">AperÃ§u des Services</h2>
+                        <h2 class="section-title">Aperçu des Services</h2>
                         @if(Auth::user()->department)
                             <a href="{{ route('departments.services.index', ['department' => Auth::user()->department->id]) }}" class="btn btn-primary">
                                 <i class="fas fa-external-link-alt"></i> Voir tous les services
@@ -200,7 +201,7 @@
                     
                     <div class="services-grid">
                         @if(Auth::user()->department)
-                            @forelse(Auth::user()->department->services()->latest()->take(4)->get() as $service)
+                            @forelse(Auth::user()->department->services()->withCount('users')->latest()->take(4)->get() as $service)
                                 <div class="service-card">
                                     <div class="service-header">
                                         <h3>{{ $service->name }}</h3>
@@ -212,11 +213,11 @@
                                         {{ Str::limit($service->description, 100) ?? 'Aucune description' }}
                                     </p>
                                     <div class="service-stats">
-                                        <span><i class="fas fa-users"></i> {{ $service->users_count ?? 0 }} employÃ©s</span>
+                                        <span><i class="fas fa-users"></i> {{ $service->users_count }} ouvriers</span>
                                         @if(Auth::user()->department)
                                             <a href="{{ route('departments.services.show', ['department' => Auth::user()->department->id, 'service' => $service->id]) }}" 
                                                class="btn btn-sm btn-outline">
-                                                DÃ©tails
+                                                Détails
                                             </a>
                                         @endif
                                     </div>
@@ -224,11 +225,11 @@
                             @empty
                                 <div class="no-services">
                                     <i class="fas fa-info-circle"></i>
-                                    <p>Aucun service n'a encore Ã©tÃ© crÃ©Ã© dans ce dÃ©partement.</p>
+                                    <p>Aucun service n'a encore été créé dans ce département.</p>
                                     @if(Auth::user()->isAdmin2())
                                         <a href="{{ route('departments.services.create', ['department' => Auth::user()->department->id]) }}" 
                                            class="btn btn-primary">
-                                            <i class="fas fa-plus"></i> CrÃ©er un service
+                                            <i class="fas fa-plus"></i> Créer un service
                                         </a>
                                     @endif
                                 </div>
@@ -236,7 +237,7 @@
                         @else
                             <div class="no-services">
                                 <i class="fas fa-exclamation-triangle"></i>
-                                <p>Vous n'Ãªtes pas encore assignÃ© Ã  un dÃ©partement.</p>
+                                <p>Vous n'êtes pas encore assigné à un département.</p>
                             </div>
                         @endif
                     </div>
@@ -244,35 +245,40 @@
                 <!-- Recent Activity -->
                 <div class="activity-section">
                     <div class="section-header">
-                        <h2 class="section-title">ActivitÃ©s rÃ©centes</h2>
-                        <a href="#" class="btn">Voir tout</a>
+                        <h2 class="section-title">Activités récentes</h2>
+                        <a href="#" class="btn">Voir tout l'historique</a>
                     </div>
                     <table class="activity-table">
                         <thead>
                             <tr>
                                 <th>Utilisateur</th>
                                 <th>Inscription</th>
-                                <th>DerniÃ¨re MAJ</th>
-                                <th>DerniÃ¨re Connexion</th>
-                                <th>DerniÃ¨re ActivitÃ©</th>
+                                <th>Dernière mise à jour</th>
+                                <th>Dernière connexion</th>
+                                <th>Dernière activité</th>
                                 <th>Statut</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($recentActivities ?? [] as $activity)
                                 <tr>
-                                    <td>{{ $activity->user->name ?? 'Non Renseigne'}}</td>
+                                    <td>{{ $activity->name ?? $activity->matricule }}</td>
                                     <td>{{ $activity->created_at->format('d/m/Y') }}</td>
                                     <td>{{ $activity->info_updated_at ? $activity->info_updated_at->format('d/m/Y') : 'N/A' }}</td>
                                     <td>{{ $activity->last_login_at ? $activity->last_login_at->format('d/m/Y H:i') : 'N/A' }}</td>
                                     <td>{{ $activity->last_activity_at ? $activity->last_activity_at->diffForHumans() : 'N/A' }}</td>
                                     <td>
-                                        <div class="status-dot {{ $activity->last_activity_at && $activity->last_activity_at->gt(now()->subMinutes(5)) ? 'bg-success' : 'bg-gray' }}"></div>
+                                        <div class="status-indicator">
+                                            <div class="status-dot {{ $activity->is_online ? 'bg-success' : 'bg-gray' }}"></div>
+                                            <span class="status-text">
+                                                {{ $activity->is_online ? 'En ligne' : 'Hors ligne' }}
+                                            </span>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center">Aucune activitÃ© rÃ©cente</td>
+                                    <td colspan="6" class="text-center">Aucune activité récente</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -307,8 +313,8 @@
                 <!-- Settings Section -->
                 <section id="section-settings" style="display:none">
                     <div class="page-header">
-                        <h1 class="page-title">ParamÃ¨tres</h1>
-                        <div class="breadcrumb">Tableau de bord / ParamÃ¨tres</div>
+                        <h1 class="page-title">Paramètres</h1>
+                        <div class="breadcrumb">Tableau de bord / Paramètres</div>
                     </div>
                     @include('departments.partials.settings')
                 </section>
@@ -316,7 +322,7 @@
                 <!-- Reports Section -->
                 <section id="section-reports" style="display:none">
                     <div class="page-header">
-                        <h1 class="page-title">Rapports</h1>
+                        <h1 class="page-title">Rapports d'activité</h1>
                         <div class="breadcrumb">Tableau de bord / Rapports</div>
                     </div>
                     <div>
@@ -327,11 +333,11 @@
                 <!-- Downloads Section -->
                 <section id="section-historydownloads" style="display:none">
                     <div class="page-header">
-                        <h1 class="page-title">Historiques des telechargements</h1>
-                        <div class="breadcrumb">Tableau de bord / Historique des telechargements</div>
+                        <h1 class="page-title">Historique des téléchargements</h1>
+                        <div class="breadcrumb">Tableau de bord / Historique des téléchargements</div>
                     </div>
                     <div>
-                        <p>Contenu de l'historique ici</p>
+                        <p>Historique des documents téléchargés</p>
                     </div>
                 </section>
             @endif

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des EmployÃ©s - {{ auth()->user()->department->name ?? 'DÃ©partement' }}</title>
+    <title>Personnel du département - {{ auth()->user()->department->name ?? 'Département' }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
      
@@ -15,20 +15,20 @@
     <div class="dashboard-container">
         <main class="main-content" style="margin-left: 0;">
             <div class="page-header">
-                <h1 class="page-title">Liste des Ouvriers - {{ auth()->user()->department->name ?? 'DÃ©partement' }}</h1>
+                <h1 class="page-title">Personnel de {{ auth()->user()->department->name ?? 'département' }}</h1>
                 <div class="breadcrumb">
-                    <a href="{{ route('departments.dashboard') }}" class="text-blue-600">Tableau de bord</a> / EmployÃ©s
+                    <a href="{{ route('departments.dashboard') }}" class="text-blue-600">Tableau de bord</a> / Personnel
                 </div>
             </div>
 
             <div class="header-actions">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Rechercher un employÃ©...">
+                    <input type="text" id="searchInput" placeholder="Rechercher un membre du personnel...">
                 </div>
                 <a href="{{ route('departments.staff.create') }}" class="btn-primary">
                     <i class="fas fa-user-plus"></i>
-                    Ajouter un Ouvrier
+                    Ajouter un employé
                 </a>
             </div>
 
@@ -43,11 +43,11 @@
                     <thead>
                         <tr>
                             <th>Matricule</th>
-                            <th>Nom</th>
-                            <th>Email</th>
+                            <th>Nom et prénom</th>
+                            <th>Adresse e-mail</th>
                             <th>Service</th>
                             <th>Statut</th>
-                            <th>DerniÃ¨re ActivitÃ©</th>
+                            <th>Dernière activité</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -55,7 +55,7 @@
                         @forelse($employees as $employee)
                             <tr>
                                 <td>{{ $employee->matricule }}</td>
-                                <td>{{ $employee->name ?? 'Non renseignÃ©' }}</td>
+                                <td>{{ $employee->name ?? 'Non renseigné' }}</td>
                                 <td>{{ $employee->email }}</td>
                                 <td>
                                     @if($employee->service)
@@ -64,7 +64,7 @@
                                             {{ $employee->service->name }}
                                         </span>
                                     @else
-                                        <span class="text-gray-400">Non assignÃ©</span>
+                                        <span class="text-gray-400">Non affecté</span>
                                     @endif
                                 </td>
                                 <td>
@@ -86,7 +86,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-800" 
-                                                    onclick="return confirm('ÃŠtes-vous sÃ»r de vouloir supprimer cet employÃ© ?')">
+                                                    onclick="return confirm('Êtes-vous sûr de vouloir retirer cet employé du département ?')">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
@@ -98,7 +98,7 @@
                                 <td colspan="7" class="text-center py-4">
                                     <div class="flex flex-col items-center justify-center space-y-2">
                                         <i class="fas fa-users text-gray-400 text-4xl"></i>
-                                        <p class="text-gray-500">Aucun employÃ© trouvÃ© dans ce dÃ©partement</p>
+                                        <p class="text-gray-500">Aucun membre du personnel n'est affecté à ce département</p>
                                     </div>
                                 </td>
                             </tr>

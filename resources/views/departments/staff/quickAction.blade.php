@@ -10,17 +10,18 @@
         <div class="actions-grid">
             <a href="{{route('departments.staff.index')}}" class="action-card">
                 <i class="fas fa-users action-icon"></i>
-
-                    <h3>Liste des Employés Enregistrés</h3>
+                <h3>Personnel du département</h3>
+                <p class="action-desc">Consultez la liste complète des employés</p>
             </a>
             <a href="{{route('departments.staff.create')}}" class="action-card">
-            <i class="fas fa-user-plus action-icon"></i>
-
-                <h3>Ajouter un utilisateur</h3>
+                <i class="fas fa-user-plus action-icon"></i>
+                <h3>Intégrer un employé</h3>
+                <p class="action-desc">Ajoutez un nouveau membre au département</p>
             </a>
             <a href="{{route('statistique')}}" class="action-card">
                 <i class="fas fa-chart-line action-icon"></i>
-            <h3>Statistiques d'utilisation</h3>
+                <h3>Analyses RH</h3>
+                <p class="action-desc">Consultez les indicateurs du personnel</p>
             </a>
         </div>
 </body>

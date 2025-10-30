@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services du DÃ©partement - {{ $department->name }}</title>
+    <title>Services du département - {{ $department->name }}</title>
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
@@ -22,7 +22,7 @@
         <div class="services-container">
             <div class="page-header">
                 <div class="header-content">
-                    <h1>Services du DÃ©partement</h1>
+                    <h1>Services du département</h1>
                     <nav class="breadcrumb">
                         <a href="{{ route('departments.dashboard') }}">Tableau de bord</a> /
                         <span>Services</span>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="header-actions">
                     <a href="{{ route('departments.services.create', ['department' => $department->id]) }}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Nouveau Service
+                        <i class="fas fa-plus"></i> Ajouter un service
                     </a>
                 </div>
             </div>
@@ -53,18 +53,18 @@
                             <div class="service-stats">
                                 <div class="stat">
                                     <i class="fas fa-users"></i>
-                                    <span>{{ $service->users_count ?? 0 }} employÃ©s</span>
+                                    <span>{{ $service->users_count ?? 0 }} employés</span>
                                 </div>
                                 <div class="stat">
                                     <i class="fas fa-calendar"></i>
-                                    <span>CrÃ©Ã© le {{ $service->created_at->format('d/m/Y') }}</span>
+                                    <span>Créé le {{ $service->created_at->format('d/m/Y') }}</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="service-actions">
                             <a href="{{ route('departments.services.show', ['department' => $department->id, 'service' => $service->id]) }}" class="btn btn-info">
-                                <i class="fas fa-eye"></i> DÃ©tails
+                                <i class="fas fa-eye"></i> Voir les détails
                             </a>
                             <a href="{{ route('departments.services.edit', ['department' => $department->id, 'service' => $service->id]) }}" class="btn btn-warning">
                                 <i class="fas fa-edit"></i> Modifier
@@ -77,10 +77,10 @@
                 @empty
                     <div class="no-services">
                         <i class="fas fa-folder-open"></i>
-                        <h2>Aucun service trouvÃ©</h2>
-                        <p>Votre dÃ©partement n'a pas encore de services. Commencez par en crÃ©er un!</p>
+                        <h2>Aucun service trouvé</h2>
+                        <p>Votre département n'a pas encore de services. Commencez par en créer un !</p>
                         <a href="{{ route('departments.services.create', ['department' => $department->id]) }}" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> CrÃ©er un service
+                            <i class="fas fa-plus"></i> Créer un service
                         </a>
                     </div>
                 @endforelse

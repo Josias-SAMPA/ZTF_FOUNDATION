@@ -97,7 +97,9 @@ class ServiceController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255'
+            'description' => 'required|string|max:255',
+            'department_id' => 'required|exists:departments,id',
+            'is_active' => 'boolean'
         ]);
 
         try {
