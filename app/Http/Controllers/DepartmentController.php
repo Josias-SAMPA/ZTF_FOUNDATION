@@ -19,10 +19,13 @@ class DepartmentController extends Controller
         
         if ($user->isAdmin2()) {
             // Pour les chefs de département, montrer uniquement leurs données
-            $department = Department::find($user->department_id);
+            $department = Department::with(['services' => function($query) {
+                $query->withCount('users');
+            }])->find($user->department_id);
+            
             $departmentUsers = User::where('department_id', $user->department_id)->count();
-            $departmentServices = Service::where('department_id', $user->department_id)->count();
-            $recentActivities = User::with('user')
+            $departmentServices = $department->services()->count();
+            $recentActivities = User::with(['services'])
                                    ->where('department_id', $user->department_id)
                                    ->orderBy('last_activity_at', 'desc')
                                    ->limit(10)
@@ -174,8 +177,8 @@ class DepartmentController extends Controller
                 ->with('error', 'Accès non autorisé.');
         }
 
-        // Récupérer les employés du département avec leurs services
-        $employees = User::with(['service'])
+        // Récupérer les employés du département avec leur service principal
+        $employees = User::with(['primaryService'])
             ->where('department_id', $user->department_id)
             ->where('id', '!=', $user->id) // Exclure le chef lui-même
             ->orderBy('last_activity_at', 'desc')
@@ -253,12 +256,20 @@ class DepartmentController extends Controller
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'password' => bcrypt($validated['password']),
-                'service_id' => $validated['service_id'],
                 'department_id' => $user->department_id,
                 'is_active' => $validated['is_active'],
                 'registered_at' => now(),
                 'matricule' => $matricule
             ]);
+
+            // Affecter l'employé au service via la table pivot avec synchronisation
+            $employee->services()->sync([$service->id => [
+                'created_at' => now(),
+                'updated_at' => now()
+            ]]);
+
+            // Rafraîchir le cache du service
+            $service->refresh();
 
             DB::commit();
             
@@ -412,7 +423,6 @@ class DepartmentController extends Controller
             $updateData = [
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'service_id' => $validated['service_id'],
                 'is_active' => $validated['is_active']
             ];
 
@@ -422,6 +432,15 @@ class DepartmentController extends Controller
             }
 
             $staff->update($updateData);
+
+            // Gérer l'affectation au service
+            $service = Service::find($validated['service_id']);
+            
+            // Détacher l'utilisateur de tous ses services actuels
+            $staff->services()->detach();
+            
+            // L'attacher au nouveau service
+            $service->users()->attach($staff->id);
 
             DB::commit();
             

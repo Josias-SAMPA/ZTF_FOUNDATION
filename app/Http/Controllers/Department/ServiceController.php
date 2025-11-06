@@ -14,7 +14,8 @@ class ServiceController extends Controller
      */
     public function index(Department $department)
     {
-        $services = $department->services()->withCount('users')->get();
+        $services = $department->services()->get();
+        // Le total_users_count sera calculé automatiquement via l'accessor
         return view('departments.services.index', compact('services', 'department'));
     }
 
@@ -55,10 +56,7 @@ class ServiceController extends Controller
      */
     public function show(Department $department, Service $service)
     {
-        $service->load(['users' => function ($query) {
-            $query->select('users.id', 'users.name', 'users.email', 'users.position', 'users.created_at');
-        }]);
-        
+        $service->load('users');
         return view('departments.services.show', compact('department', 'service'));
     }
 

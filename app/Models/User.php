@@ -67,12 +67,21 @@ class User extends Authenticatable
 
 
 
-    public function service(){
-        return $this->belongsTo(Service::class);
+    /**
+     * Relation Many-to-Many avec les services
+     * Cette relation permet d'affecter un utilisateur à plusieurs services
+     */
+    public function services(){
+        return $this->belongsToMany(Service::class, 'service_user', 'user_id', 'service_id')
+                    ->withTimestamps();
     }
 
-    public function services(){
-        return $this->belongsToMany(Service::class, 'service_user', 'user_id', 'service_id');
+    /**
+     * Relation avec le service principal de l'utilisateur (si nécessaire)
+     * À utiliser uniquement si un utilisateur doit avoir un service principal
+     */
+    public function primaryService(){
+        return $this->belongsTo(Service::class, 'service_id');
     }
 
     public function head(){

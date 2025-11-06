@@ -75,7 +75,7 @@
                         <i class="fas fa-users"></i>
                     </div>
                     <div class="stat-info">
-                        <span class="stat-value">{{ $service->users_count ?? 0 }}</span>
+                        <span class="stat-value">{{ $service->total_users_count }}</span>
                         <span class="stat-label">Employés</span>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        @if($service->users && $service->users->count() > 0)
+        @if($service->users->count() > 0)
         <div class="employees-card">
             <h2>Personnel du service</h2>
             <div class="table-responsive">
@@ -103,7 +103,7 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->position ?? 'Non renseignée' }}</td>
-                            <td>{{ $user->created_at->format('d/m/Y') }}</td>
+                            <td>{{ $user->pivot->created_at->format('d/m/Y') }}</td>
                         </tr>
                         @endforeach
                     </tbody>

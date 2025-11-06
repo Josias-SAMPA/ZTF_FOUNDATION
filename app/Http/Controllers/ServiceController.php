@@ -126,7 +126,8 @@ class ServiceController extends Controller
                 'name' => $validated['name'],
                 'description' => $validated['description'],
                 'department_id' => $departmentId,
-                'department_code' => $deptCode ?? null // Stocker le code du département
+                'department_code' => $deptCode ?? null, // Stocker le code du département
+                'is_active' => $validated['is_active'] ?? true
             ]);
 
             return redirect()->route('services.index')

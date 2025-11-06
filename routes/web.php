@@ -140,6 +140,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/{service}/edit', [App\Http\Controllers\Department\ServiceController::class, 'edit'])->name('edit');
         Route::put('/{service}', [App\Http\Controllers\Department\ServiceController::class, 'update'])->name('update');
         Route::delete('/{service}', [App\Http\Controllers\Department\ServiceController::class, 'destroy'])->name('destroy');
+        
+        // Routes pour la gestion des utilisateurs des services
+        Route::get('/{service}/unassigned-users', [App\Http\Controllers\Department\ServiceUserController::class, 'getUnassignedUsers'])
+            ->name('unassigned-users');
+        Route::post('/{service}/assign-users', [App\Http\Controllers\Department\ServiceUserController::class, 'assignUsers'])
+            ->name('assign-users');
     });
 
     // Resource routes pour les départements

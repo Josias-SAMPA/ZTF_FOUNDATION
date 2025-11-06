@@ -7,9 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('dashboards.css') }}">
-    
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/services-overview.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard-responsive.css') }}">
 </head>
 <body>
     @if(Auth::user()->isAdmin2())
@@ -357,6 +357,7 @@
     </div>
     
     <script src="{{ asset('js/dashboard.js') }}"></script>
+    <script src="{{ asset('js/dashboard-responsive.js') }}"></script>
 </body>
 </html>
 

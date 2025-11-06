@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Services du département - {{ $department->name }}</title>
-    <!-- Font Awesome -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="department-id" content="{{ $department->id }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/services/index.css') }}">
 </head>
 <body>
     <nav class="navbar">
@@ -54,6 +55,9 @@
                                 <div class="stat">
                                     <i class="fas fa-users"></i>
                                     <span>{{ $service->users_count ?? 0 }} employés</span>
+                                    <button class="btn btn-add-user" onclick="openUsersModal({{ $service->id }})" title="Ajouter des employés">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </button>
                                 </div>
                                 <div class="stat">
                                     <i class="fas fa-calendar"></i>
@@ -88,7 +92,31 @@
         </div>
     </div>
 
+    <!-- Modal pour l'ajout d'employés -->
+    <div id="addUsersModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ajouter des employés au service</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="search-container">
+                    <input type="text" id="userSearchInput" placeholder="Rechercher un employé..." onkeyup="filterUsers()">
+                </div>
+                <form id="assignUsersForm" method="POST">
+                    @csrf
+                    <div class="users-list">
+                        <!-- La liste des utilisateurs sera chargée ici dynamiquement -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Affecter les employés</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     
-    <script src="{{ asset('js/index.js') }}"></script>
+    <script src="{{ asset('js/services/index.js') }}"></script>
 </body>
 </html>

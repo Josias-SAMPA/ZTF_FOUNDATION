@@ -8,14 +8,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
      
     <link rel="stylesheet" href="{{ asset('dashboards.css') }}">
-    
-    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard-responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/staff/index.css') }}">
 </head>
 <body>
     <div class="dashboard-container">
         <main class="main-content" style="margin-left: 0;">
             <div class="page-header">
-                <h1 class="page-title">Personnel de {{ auth()->user()->department->name ?? 'département' }}</h1>
+                <h1 class="page-title">Ouvriers de {{ auth()->user()->department->name ?? 'département' }}</h1>
                 <div class="breadcrumb">
                     <a href="{{ route('departments.dashboard') }}" class="text-blue-600">Tableau de bord</a> / Personnel
                 </div>
@@ -58,10 +58,10 @@
                                 <td>{{ $employee->name ?? 'Non renseigné' }}</td>
                                 <td>{{ $employee->email }}</td>
                                 <td>
-                                    @if($employee->service)
+                                    @if($employee->services->isNotEmpty())
                                         <span class="service-tag">
                                             <i class="fas fa-sitemap"></i>
-                                            {{ $employee->service->name }}
+                                            {{ $employee->services->first()->name }}
                                         </span>
                                     @else
                                         <span class="text-gray-400">Non affecté</span>
@@ -110,6 +110,6 @@
     </div>
 
     
-    <script src="{{ asset('js/index.js') }}"></script>
+    <script src="{{ asset('js/staff/index.js') }}"></script>
 </body>
 </html>
