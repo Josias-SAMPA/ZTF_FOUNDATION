@@ -49,13 +49,17 @@ class DepartmentPdfController extends Controller
         $pdf->setPaper('A4');
         
         // Nom du fichier
-        $filename = 'Liste Des Ouvriers par Service _' . $department->code . '_' . now()->format('Y/md_H:i:s') . '.pdf';
+        $date = now();
+        $filename = 'Liste_Des_Ouvriers_par_Service_' . 
+            $department->code . '_Telecharger_le_' . 
+            $date->format('Y/m/d') . '_A_' . 
+            sprintf('%02d:%02d:%02d', $date->hour, $date->minute, $date->second) . '.pdf';
         
         // Générer le contenu du PDF
         $pdfContent = $pdf->output();
         
         // Définir le chemin de stockage
-        $path = 'pdfs/departments/' . $department->id . '/' . $filename;
+        $path = 'pdfs/departments/' . $department->id . '/' . $filename . $department->name;
         
         // Sauvegarder directement via le système de stockage de Laravel
         Storage::disk('public')->put($path, $pdfContent);
