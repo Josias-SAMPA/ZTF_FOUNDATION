@@ -337,7 +337,7 @@
                         <div class="breadcrumb">Tableau de bord / Historique des téléchargements</div>
                     </div>
                     <div>
-                        <p>Historique des documents téléchargés</p>
+                        <p>Voici l'historique des rapports PDF générés pour votre département. Vous pouvez consulter les détails de chaque rapport, y compris le nom du fichier, la date de génération et la taille du fichier. Vous avez également la possibilité de télécharger à nouveau les rapports précédemment générés.</p>
                     </div>
                 </section>
             @endif

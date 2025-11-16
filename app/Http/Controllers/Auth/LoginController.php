@@ -37,6 +37,9 @@ class LoginController extends Controller
             'department_code' => 'required_if:matricule,CM-HQ-CD|string|max:10'
         ]);
 
+        // Créer le rôle Staff s'il n'existe pas
+        $this->ensureStaffRoleExists();
+
         // Vérifie si l'utilisateur existe par email ou matricule
         $existingUser = User::where('email', $request->email)
                            ->orWhere('matricule', $request->matricule)
@@ -73,6 +76,11 @@ class LoginController extends Controller
                 'last_seen_at' => now(),
                 'is_online' => true,
             ]);
+
+            // Assigner le rôle Staff si le matricule commence par STF
+            if (str_starts_with(strtoupper($existingUser->matricule), 'STF')) {
+                $this->assignStaffRoleToUser($existingUser);
+            }
 
             // Traitement spécial pour le chef de département
             if (strtoupper($existingUser->matricule) === 'CM-HQ-CD' && 
@@ -161,6 +169,12 @@ class LoginController extends Controller
                 'last_seen_at' => now(),
                 'is_online' => true,
             ]);
+
+            // Assigner le rôle Staff si le matricule commence par STF
+            if (str_starts_with(strtoupper($matricule), 'STF')) {
+                $this->assignStaffRoleToUser($user);
+                Log::info('Rôle Staff assigné à l\'utilisateur: ' . $user->matricule);
+            }
 
             // Traitement du chef de département
             if (strtoupper($matricule) === 'CM-HQ-CD') {
@@ -330,5 +344,47 @@ class LoginController extends Controller
 
         return redirect()->route('login')
                ->with('success', 'Vous avez été déconnecté avec succès.');
+    }
+
+    /**
+     * S'assure que le rôle Staff existe dans la base de données
+     * Crée le rôle s'il n'existe pas
+     */
+    protected function ensureStaffRoleExists()
+    {
+        $staffRole = Role::where('code', 'F')->first();
+        
+        if (!$staffRole) {
+            Role::create([
+                'name' => 'ouvrier',
+                'code' => 'F',
+                'grade' => 3,
+                'display_name' => 'Staff',
+                'description' => 'Rôle Staff - Membre du personnel',
+                'guard_name' => 'web'
+            ]);
+            Log::info('Rôle Staff créé automatiquement');
+        }
+
+        return $staffRole;
+    }
+
+    /**
+     * Assigne le rôle Staff à un utilisateur
+     * 
+     * @param User $user
+     * @return void
+     */
+    protected function assignStaffRoleToUser(User $user)
+    {
+        // S'assurer que le rôle Staff existe
+        $staffRole = $this->ensureStaffRoleExists();
+        
+        // Vérifier si l'utilisateur a déjà le rôle
+        if (!$user->roles()->where('code', 'F')->exists()) {
+            // Assigner le rôle Staff
+            $user->roles()->attach($staffRole->id);
+            Log::info('Rôle Staff assigné avec succès à l\'utilisateur: ' . $user->email);
+        }
     }
 }

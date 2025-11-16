@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CrÃ©er un Utilisateur</title>
+    <title>Créer un Utilisateur</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
@@ -12,7 +12,7 @@
 <body class="bg-gray-100">
     <div class="form-container">
         <div class="form-header">
-            <h1>CrÃ©er un Nouvel Utilisateur</h1>
+            <h1>Créer un Nouvel Utilisateur</h1>
         </div>
 
         <form action="{{ route('committee.staff.store') }}" method="POST">
@@ -58,9 +58,9 @@
                 <h2>Affectation</h2>
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="department_id">DÃ©partement</label>
+                        <label for="department_id">Département</label>
                         <select id="department_id" name="department_id" class="form-select">
-                            <option value="">SÃ©lectionner un dÃ©partement</option>
+                            <option value="">Sélectionner un département</option>
                             @foreach($departments as $department)
                                 <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
                                     {{ $department->name }}
@@ -75,8 +75,8 @@
                     <div class="form-group">
                         <label for="service_id">Service</label>
                         <select id="service_id" name="service_id" class="form-select">
-                            <option value="">SÃ©lectionner un service</option>
-                            <!-- Les services seront chargÃ©s dynamiquement via JavaScript -->
+                            <option value="">Sélectionner un service</option>
+                            <!-- Les services seront chargés dynamiquement via JavaScript -->
                         </select>
                         @error('service_id')
                             <div class="form-error">{{ $message }}</div>
@@ -84,11 +84,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="role">RÃ´le</label>
+                        <label for="role">Rôle</label>
                         <select id="role" name="role" class="form-select" required>
-                            <option value="">SÃ©lectionner un rÃ´le</option>
+                            <option value="">Sélectionner un rôle</option>
                             <option value="admin1" {{ old('role') == 'admin1' ? 'selected' : '' }}>Administrateur</option>
-                            <option value="admin2" {{ old('role') == 'admin2' ? 'selected' : '' }}>Chef de DÃ©partement</option>
+                            <option value="admin2" {{ old('role') == 'admin2' ? 'selected' : '' }}>Chef de Département</option>
                             <option value="chef_service" {{ old('role') == 'chef_service' ? 'selected' : '' }}>Chef de Service</option>
                             <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Staff</option>
                         </select>
@@ -99,9 +99,9 @@
                 </div>
             </div>
 
-            <!-- ParamÃ¨tres du compte -->
+            <!-- Paramètres du compte -->
             <div class="form-section">
-                <h2>ParamÃ¨tres du Compte</h2>
+                <h2>Paramètres du Compte</h2>
                 <div class="form-group">
                     <label>Statut du compte</label>
                     <div class="switch-container">
@@ -124,7 +124,7 @@
                 </a>
                 <button type="submit" class="btn btn-submit">
                     <i class="fas fa-save"></i>
-                    CrÃ©er l'utilisateur
+                    Créer l'utilisateur
                 </button>
             </div>
         </form>

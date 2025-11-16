@@ -23,7 +23,6 @@
                         <div class="max-w-xl">
                             <form method="post" action="{{ route('profile.update') }}" class="space-y-6">
                                 @csrf
-                                @method('patch')
                                 <div>
                                     <x-input-label for="matricule" :value="__('Matricule')" />
                                     <x-text-input id="matricule" name="matricule" type="text" class="mt-1 block w-full" :value="old('matricule', $user->matricule)" required @readonly(true) />

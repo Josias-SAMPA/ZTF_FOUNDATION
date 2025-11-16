@@ -52,7 +52,7 @@ class DepartmentPdfController extends Controller
         $date = now();
         $filename = 'Liste_Des_Ouvriers_par_Service_' . 
             $department->code . '_Telecharger_le_' . 
-            $date->format('Y/m/d') . '_A_' . 
+            $date->format('Y m d') . '_A_' . 
             sprintf('%02d:%02d:%02d', $date->hour, $date->minute, $date->second) . '.pdf';
         
         // Générer le contenu du PDF

@@ -3,38 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un employÃ© - {{ auth()->user()->department->name ?? 'DÃ©partement' }}</title>
+    <title>Ajouter un employé - {{ auth()->user()->department->name ?? 'Département' }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('dashboards.css') }}">
     
+    <link rel="stylesheet" href="{{ asset('css/header-styles.css?v=' . filemtime(public_path('css/header-styles.css'))) }}">
     <link rel="stylesheet" href="{{ asset('css/create.css') }}">
 </head>
 <body>
     <div class="dashboard-container">
         <main class="main-content">
-            <div class="breadcrumb">
-                <a href="{{ route('departments.dashboard') }}">
-                    <i class="fas fa-home"></i>
-                    Tableau de bord
-                </a>
-                <span class="breadcrumb-separator">/</span>
-                <a href="{{ route('departments.staff.index') }}">
-                    <i class="fas fa-users"></i>
-                    EmployÃ©s
-                </a>
-                <span class="breadcrumb-separator">/</span>
-                <span>
-                    <i class="fas fa-user-plus"></i>
-                    Ajouter un employÃ©
-                </span>
+            <div class="breadcrumb-container">
+                <div class="breadcrumb">
+                    <a href="{{ route('departments.dashboard') }}" class="breadcrumb-item">
+                        <i class="fas fa-home"></i>
+                        <span>Tableau de bord</span>
+                    </a>
+                    <span class="breadcrumb-separator">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
+                    <a href="{{ route('departments.staff.index') }}" class="breadcrumb-item">
+                        <i class="fas fa-users"></i>
+                        <span>Employés</span>
+                    </a>
+                    <span class="breadcrumb-separator">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
+                    <span class="breadcrumb-item active">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Ajouter un employé</span>
+                    </span>
+                </div>
             </div>
 
-            <div class="form-container">
-                <h1 class="form-title">
-                    <i class="fas fa-user-plus"></i>
-                    Ajouter un nouvel employÃ©
-                </h1>
+            <div class="page-header-section">
+                <div class="header-content">
+                    <div class="header-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="header-info">
+                        <h1 class="page-title">Ajouter un nouvel employé</h1>
+                        <p class="page-subtitle">Créez un compte pour un nouvel employé du département</p>
+                    </div>
+                </div>
+            </div>
 
                 @if(session('error'))
                     <div class="alert alert-danger">
@@ -46,7 +59,7 @@
                         
                         @if(session('error_details') && app()->environment('local', 'development'))
                             <div class="error-details">
-                                <h4>DÃ©tails de l'erreur :</h4>
+                                <h4>Détails de l'erreur :</h4>
                                 <ul class="error-list">
                                     <li><strong>Type :</strong> {{ session('error_details')['type'] ?? 'Inconnu' }}</li>
                                     <li><strong>Fichier :</strong> {{ session('error_details')['file'] ?? 'Inconnu' }}</li>
@@ -103,14 +116,14 @@
                             <div class="form-group">
                                 <label for="matricule" class="form-label">Matricule</label>
                                 <input type="text" id="matricule" class="form-input" value="STFxxxx" disabled>
-                                <div class="form-helper">Le matricule sera gÃ©nÃ©rÃ© automatiquement lors de la crÃ©ation (format: STF0001)</div>
+                                <div class="form-helper">Le matricule sera généré automatiquement lors de la création (format: STF0001)</div>
                             </div>
 
                             <!-- Service -->
                             <div class="form-group">
                                 <label for="service_id" class="form-label required">Service</label>
                                 <select id="service_id" name="service_id" class="form-select" required>
-                                    <option value="">SÃ©lectionnez un service</option>
+                                    <option value="">Sélectionnez un service</option>
                                     @foreach($services as $service)
                                         <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>
                                             {{ $service->name }}
@@ -134,7 +147,7 @@
                             <div class="form-group">
                                 <label for="password" class="form-label required">Mot de passe temporaire</label>
                                 <input type="password" id="password" name="password" class="form-input" required>
-                                <div class="form-helper">L'employÃ© devra changer son mot de passe Ã  sa premiÃ¨re connexion</div>
+                                <div class="form-helper">L'employé devra changer son mot de passe à sa première connexion</div>
                                 @error('password')
                                     <div class="error-message">{{ $message }}</div>
                                 @enderror
@@ -182,7 +195,7 @@
                         </a>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i>
-                            Ajouter l'employÃ©
+                            Ajouter l'employé
                         </button>
                     </div>
                 </form>

@@ -2,13 +2,13 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>CrÃ©er un utilisateur</title>
+  <title>Créer un utilisateur</title>
   
     <link rel="stylesheet" href="{{ asset('css/create.css') }}">
 </head>
 <body>
   <div class="container">
-    <h1>CrÃ©er un nouvel utilisateur</h1>
+    <h1>Créer un nouvel utilisateur</h1>
 
     <div class="form-container">
       <form action="{{ route('staff.store') }}" method="POST">
@@ -41,9 +41,9 @@
           @enderror
         </div>
 
-        <!-- RÃ´les -->
+        <!-- Rôles -->
         <div class="form-group">
-          <label class="form-label">Attribuer un ou plusieurs rÃ´les</label>
+          <label class="form-label">Attribuer un ou plusieurs rôles</label>
           <div class="checkbox-list">
             @foreach($roles as $role)
               <label class="checkbox-item">
@@ -69,7 +69,7 @@
 
         <!-- Boutons -->
         <div class="btn-group">
-          <button type="submit" class="btn btn-primary">CrÃ©er</button>
+          <button type="submit" class="btn btn-primary">Créer</button>
           <a href="{{ route('dashboard') }}" class="btn btn-secondary">Annuler</a>
         </div>
       </form>

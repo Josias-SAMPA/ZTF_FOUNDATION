@@ -10,7 +10,6 @@ use App\Http\Controllers\DepartmentHeadController;
 use App\Http\Middleware\CheckPermission;
 use App\Http\Controllers\TwoFAController;
 use App\Http\Controllers\ComiteController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\DashboardController;
@@ -19,6 +18,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\HqStaffFormController;
+use App\Http\Controllers\StaffDashboardController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\CommitteePdfController;
 use App\Http\Controllers\DepartmentPdfController;
@@ -45,9 +45,7 @@ Route::middleware('auth')->group(function() {
         return view('departments.dashboard');
     })->name('headDept.dashboard');
 
-    Route::get('/staff/dashboard', function() {
-        return view('staff.dashboard');
-    })->name('staff.dashboard');
+    Route::get('/staff/dashboard', [StaffDashboardController::class, 'index'])->name('staff.dashboard');
 
     Route::get('/committee/dashboard', [ComiteController::class, 'dashboard'])->name('committee.dashboard');
 });
@@ -328,8 +326,8 @@ Route::middleware('auth')->group(function () {
     // Routes du profil
     Route::get('/profile/show', [UserProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/update', [UserProfileController::class, 'updateProfile'])->name('profile.update');
-    Route::put('/profile/password', [UserProfileController::class, 'updatePassword'])->name('profile.password.update');
+    Route::post('/profile/update', [UserProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/profile/password', [UserProfileController::class, 'updatePassword'])->name('profile.password.update');
     Route::post('/profile/delete',[UserProfileController::class,'destroy'])->name('profile.destroy');
 // Routes for other pages, all with unique names
 Route::get('/about', function () {
