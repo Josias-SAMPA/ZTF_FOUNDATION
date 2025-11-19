@@ -27,7 +27,7 @@
                             <b>Super-administrateur</b>
                         @elseif(Auth::user()->isAdmin1())
                             <b>Administrateur</b>
-                        @elseif(Auth::user()->isAdmin2())
+                        @elseif(Auth::user()->isAdmin2() && Auth::user()->roles->first()?->name === 'chef_departement')
                             <b>Chef de département</b>
                         @else
                             <b>Utilisateur</b>

@@ -9,6 +9,7 @@ use App\Models\Committee;
 use App\Models\Department;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SuperAdminController extends Controller
 {
@@ -163,6 +164,8 @@ class SuperAdminController extends Controller
         $totalDepts = Department::count();
         $totalCom = Committee::count();
         $totalServices = Service::count();
+        $listRole = User::with('roles')->get();
+        
         
         // Statistiques des rôles et permissions
         $nbreRole = Role::count();
@@ -205,8 +208,8 @@ class SuperAdminController extends Controller
         }])
         ->withCount('users')
         ->get();
-
-        $user = auth()->user();
+        $user = Auth::user();
+        
         
         return view('superAdmin.dashboard', compact(
             'totalUsers',

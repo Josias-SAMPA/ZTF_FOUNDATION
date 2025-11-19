@@ -23,7 +23,7 @@
             </div>
         @endif
 
-        <form action="{{ route('identification.register') }}" method="POST" target="_blank">
+        <form action="{{ route('identification.register') }}" method="POST" target="_blank" id="registrationForm">
             @csrf
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <label for="name">First Name:</label>
@@ -35,7 +35,9 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="first_password" required>
 
-            <button type="submit">Register</button>
+            <button type="submit" id="registerBtn">Register</button>
         </form>
+
+        <script src="{{ asset('js/form.js') }}"></script>
     </body>
 </html>

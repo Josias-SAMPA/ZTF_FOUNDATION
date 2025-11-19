@@ -312,6 +312,12 @@ Route::middleware('guest')->group(function () {
 Route::post('/download-pdf', [HqStaffFormController::class, 'telechargerPDF'])->name('download.pdf');
 Route::get('/formulaire/create',[HqStaffFormController::class,'showBigForm'])->name('BigForm');
 Route::get('/user/{id}/download-pdf', [HqStaffFormController::class, 'downloadUserPDF'])->name('user.download.pdf');
+Route::get('/user/{userId}/download-staff-pdf', [HqStaffFormController::class, 'downloadUserStaffPDF'])->name('user.download.staff.pdf');
+Route::get('/pdf-download-history', [HqStaffFormController::class, 'downloadHistory'])->name('pdf.download.history');
+Route::get('/pdf-download/{historyId}', [HqStaffFormController::class, 'redownloadPDF'])->name('redownload.pdf');
+Route::get('/pdf-pending-approvals', [HqStaffFormController::class, 'pendingApprovals'])->name('pdf.pending.approvals');
+Route::post('/pdf-link/{staffUserId}/approve', [HqStaffFormController::class, 'approvePDFLink'])->name('pdf.link.approve');
+Route::post('/pdf-link/{staffUserId}/reject', [HqStaffFormController::class, 'rejectPDFLink'])->name('pdf.link.reject');
 Route::delete('/user/{id}/delete', [UserController::class, 'deleteUser'])->name('user.delete');
 
 Route::middleware('auth')->group(function () {
