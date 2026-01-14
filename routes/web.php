@@ -21,6 +21,7 @@ use App\Http\Controllers\HqStaffFormController;
 use App\Http\Controllers\StaffDashboardController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\CommitteePdfController;
+use App\Http\Controllers\Committee\ManageUsersController;
 use App\Http\Controllers\DepartmentPdfController;
 use App\Http\Controllers\RoleAssignmentController;
 use App\Http\Controllers\FirstRegistrationController;
@@ -51,8 +52,8 @@ Route::middleware('auth')->group(function() {
 });
 
 
-Route::post('update',[UserController::class,'update'])->name('users.update');
-Route::post('destroy',[UserController::class,'destroy'])->middleware('auth')->name('staff.index');
+Route::post('/users/bulk-update',[UserController::class,'update'])->name('users.bulk.update');
+Route::post('/users/bulk-destroy',[UserController::class,'destroy'])->middleware('auth')->name('users.bulk.destroy');
 
 
 Route::get('/staff/index',function(){
@@ -181,6 +182,14 @@ Route::middleware('auth')->group(function () {
         // Route pour la liste des services
         Route::get('/services', [ServiceListController::class, 'index'])
             ->name('services.index');
+
+        // Routes pour les affectations d'utilisateurs aux départements
+        Route::prefix('assignments')->name('assignments.')->group(function() {
+            Route::get('/', [ManageUsersController::class, 'indexUnAssigned'])->name('index');
+            Route::get('/user/{userId}', [ManageUsersController::class, 'assignForm'])->name('form');
+            Route::post('/user/{userId}', [ManageUsersController::class, 'assignUserToDepartment'])->name('store');
+        });
+
 Route::get('/committee/departments/manage', [ComiteController::class, 'manage'])
     ->name('committee.departments.manage');
         // Routes principales du comité

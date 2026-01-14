@@ -156,6 +156,18 @@ body {
 
 /*-------- Media Queries for Navbar ----------*/
 @media (max-width: 768px) {
+    .navbar {
+        padding: 12px 15px;
+    }
+
+    .navbar .logo {
+        font-size: 1.4em;
+    }
+
+    .navbar .logo img {
+        height: 40px;
+    }
+
     .navbar .nav-links {
         display: none; /* Hide nav links by default on mobile */
         flex-direction: column;
@@ -164,27 +176,53 @@ body {
         position: absolute;
         top: 100%; /* Position below the navbar */
         left: 0;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        right: 0;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         padding: 10px 0;
-        transition: max-height 0.3s ease-out; /* Smooth slide down */
-        max-height: 0; /* Initially collapsed */
-        overflow: hidden; /* Hide overflow when collapsed */
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out;
     }
 
     .navbar .nav-links.active {
         display: flex; /* Show when active */
-        max-height: 300px; 
+        max-height: 500px;
+        padding: 15px 0;
     }
 
     .navbar .nav-links li {
         width: 100%;
         text-align: center;
-        padding: 10px 0;
+        padding: 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .navbar .nav-links li:last-child {
+        border-bottom: none;
     }
 
     .navbar .nav-links a {
-        padding: 10px 20px;
+        padding: 12px 20px;
         display: block; /* Make links full width */
+        font-size: 1em;
+    }
+
+    .navbar .auth-buttons {
+        flex-direction: row;
+        gap: 8px;
+        margin: 10px 20px 0 20px;
+        padding: 10px 0 0 0;
+        border-left: none;
+        border-top: 1px solid #f0f0f0;
+        width: calc(100% - 40px);
+    }
+
+    .navbar .auth-link {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 10px;
+        font-size: 0.9em;
     }
 
     .navbar .hamburger {
@@ -193,11 +231,43 @@ body {
 }
 
 @media (max-width: 480px) {
-    .navbar .logo {
-        font-size: 1.5em;
+    .navbar {
+        padding: 10px 12px;
     }
+
+    .navbar .logo {
+        font-size: 1.2em;
+    }
+
+    .navbar .logo img {
+        height: 35px;
+    }
+
     .navbar .hamburger {
         font-size: 1.5em;
+    }
+
+    .navbar .nav-links.active {
+        max-height: 600px;
+    }
+
+    .navbar .nav-links a {
+        padding: 10px 15px;
+        font-size: 0.95em;
+    }
+
+    .navbar .auth-buttons {
+        margin: 10px 15px 0 15px;
+        width: calc(100% - 30px);
+    }
+
+    .navbar .auth-link {
+        padding: 8px 8px;
+        font-size: 0.85em;
+    }
+
+    .navbar .auth-link i {
+        font-size: 0.9em;
     }
 }
 

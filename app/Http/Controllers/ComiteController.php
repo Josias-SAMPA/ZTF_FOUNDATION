@@ -18,7 +18,7 @@ class ComiteController extends Controller
     public function dashboard()
     {
         \Log::info('ComiteController@dashboard called');
-        \Log::info('User: ' . auth()->user()->matricule);
+        \Log::info('User: ' . Auth::user()->matricule);
 
         // Statistiques globales
         $totalDepts = Department::count();
@@ -45,7 +45,8 @@ class ComiteController extends Controller
             ->orderBy('last_activity_at', 'desc')
             ->get()
             ->map(function($user) {
-                $isOnline = $user->last_activity_at ? \Carbon\Carbon::parse($user->last_activity_at)->gt(now()->subMinutes(15)) : false;
+                // Vérifier si l'utilisateur est actuellement connecté
+                $isOnline = $user->is_online === true;
                 
                 return [
                     'user_name' => $user->matricule,
@@ -55,7 +56,7 @@ class ComiteController extends Controller
                     'last_seen' => $user->last_activity_at ? $user->last_activity_at->diffForHumans() : 'Jamais',
                     'is_online' => $isOnline,
                     'status' => $isOnline ? 'En ligne' : 'Hors ligne',
-                    'status_class' => $isOnline ? 'success' : 'warning',
+                    'status_class' => $isOnline ? 'success' : 'danger',
                 ];
             });
 
@@ -63,9 +64,9 @@ class ComiteController extends Controller
         $departments = Department::with(['head', 'services', 'users'])
             ->withCount(['users', 'services'])
             ->get();
-
-        $user = auth()->user();
-
+            
+        $user = Auth::user();
+        
         // Récupérer l'historique des PDFs des départements
         $departmentPdfs = collect(Storage::files('public/pdfs/departments'))
             ->filter(function($file) {
@@ -93,19 +94,32 @@ class ComiteController extends Controller
 
     /**
      * Affiche la page de gestion des départements
+     * Récupère les chefs nouvellement enregistrés avec leurs départements et rôles
      * 
      * @return \Illuminate\View\View
      */
     public function manage()
     {
-        // Récupérer les départements avec leurs chefs, services et utilisateurs associés
-        $departments = Department::with(['head', 'services', 'services.users'])
-            ->withCount(['users', 'services'])
-            ->get();
+        // Récupérer les chefs nouvellement enregistrés (matricule format CM-HQ-XXX-CD)
+        // avec leurs départements, services, utilisateurs et rôles
+        $departments = Department::with([
+            'head' => function($query) {
+                $query->with('roles'); // Charger les rôles du chef
+            },
+            'services',
+            'services.users'
+        ])
+        ->withCount(['users', 'services'])
+        ->get();
 
         // Récupérer les utilisateurs disponibles pour être chef de département
-        // (ceux qui ne sont pas déjà chefs d'un autre département)
-        $availableUsers = User::whereDoesntHave('departmentAsHead')
+        // Exclure ceux qui sont déjà chefs d'un département
+        $availableUsers = User::whereDoesntHave('head')
+                            ->where(function($query) {
+                                // Inclure seulement les chefs potentiels (matricule CD ou sans département assigné)
+                                $query->whereRaw("matricule LIKE 'CM-HQ-%-CD'")
+                                      ->orWhereNull('department_id');
+                            })
                             ->orderBy('name')
                             ->get();
 
@@ -373,11 +387,54 @@ class ComiteController extends Controller
     }
 
     /**
+     * Récupère la liste des chefs de département avec leurs détails
+     * Inclut le chef, son département et ses rôles assignés en base de données
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getHeadsWithDetails()
+    {
+        $heads = User::whereHas('head')
+            ->with([
+                'head' => function($query) {
+                    $query->select('id', 'name', 'code', 'description', 'head_id');
+                },
+                'roles' => function($query) {
+                    $query->select('roles.id', 'roles.name', 'roles.code', 'roles.display_name', 'roles.grade');
+                }
+            ])
+            ->where(function($query) {
+                $query->whereRaw("matricule LIKE 'CM-HQ-%-CD'");
+            })
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'matricule' => $user->matricule,
+                    'department' => $user->head()->first(),
+                    'roles' => $user->roles,
+                    'created_at' => $user->created_at,
+                    'is_active' => $user->is_active,
+                ];
+            });
+
+        return $heads;
+    }
+
+    /**
      * Génère un PDF avec la liste des départements et leurs chefs
+     * Inclut maintenant les rôles assignés aux chefs
      */
     public function generateDepartmentsHeadsPdf()
     {
-        $departments = Department::with('head')->get();
+        $departments = Department::with([
+            'head' => function($query) {
+                $query->with('roles');
+            }
+        ])->get();
         
         $pdf = \PDF::loadView('committee.pdfs.departments-heads', compact('departments'));
         
@@ -390,10 +447,16 @@ class ComiteController extends Controller
 
     /**
      * Génère un PDF avec la liste des départements, leurs chefs et services
+     * Inclut maintenant les rôles assignés aux chefs
      */
     public function generateDepartmentsHeadsServicesPdf()
     {
-        $departments = Department::with(['head', 'services'])->get();
+        $departments = Department::with([
+            'head' => function($query) {
+                $query->with('roles');
+            },
+            'services'
+        ])->get();
         
         $pdf = \PDF::loadView('committee.pdfs.departments-heads-services', compact('departments'));
         

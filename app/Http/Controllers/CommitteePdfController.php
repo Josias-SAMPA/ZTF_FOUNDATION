@@ -82,7 +82,14 @@ class CommitteePdfController extends Controller
                 $query->orderBy('name');
             },
             'services.users' => function($query) {
-                $query->orderBy('name')->select('id', 'name', 'matricule', 'service_id');
+                $query->orderBy('name')->select([
+                    'users.id',
+                    'users.name',
+                    'users.matricule',
+                    'service_user.service_id',
+                    'service_user.user_id'
+
+                ]);
             },
             'services.users.roles' => function($query) {
                 $query->select(['roles.id as role_id', 'roles.name as role_name']);

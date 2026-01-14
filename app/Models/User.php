@@ -154,7 +154,8 @@ class User extends Authenticatable
         $role = Role::findByCode($code);
 
         if($role){
-            $this->roles()->syncWithoutDetaching([$role->id]);
+            /** @var array $result */
+            $result = $this->roles()->syncWithoutDetaching([$role->id]);
             return $role->code;
         }
 
@@ -168,11 +169,14 @@ class User extends Authenticatable
         }
 
         // Verification via la base de donnee
-        return $this->roles()->where('code', $roleCode)->exists();
+        /** @var bool $exists */
+        $exists = $this->roles()->where('code', $roleCode)->exists();
+        return $exists;
     }
 
     public function hasPermission(string $permission){
         $direct=$this->permissions()->where('name',$permission)->exists();
+        /** @var bool $viaRole */
         $viaRole=$this->roles()->whereHas('permissions',fn($q) => $q->where('name',$permission))->exists();
         return $direct || $viaRole ;
     }
@@ -195,7 +199,9 @@ class User extends Authenticatable
         }
 
         // Si le format ne correspond pas, vérifie le rôle dans la base de données
-        return $this->roles()->where('code', 'SPAD')->exists();
+        /** @var bool $isSpad */
+        $isSpad = $this->roles()->where('code', 'SPAD')->exists();
+        return $isSpad;
     }
 
     /**

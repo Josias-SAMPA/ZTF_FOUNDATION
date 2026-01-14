@@ -14,6 +14,17 @@
     @if(Auth::user()->isAdmin1())
         @include('partials.welcome-message')
     @endif
+
+    <!-- Mobile Menu Burger Button -->
+    <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -24,10 +35,10 @@
                     <div class="user-role">
                         @if(Auth::user()->isSuperAdmin())
                             Super Administrateur
-                        @elseif(Auth::user()->isAdmin1())
+                        @elseif(Auth::user()->isAdmin1() && Auth::user()->roles->contains('name', 'membre_comite_nehemie'))
                             Administrateur
                         @elseif(Auth::user()->isAdmin2())
-                            Chef de DÃ©partement
+                            Chef de Département
                         @else
                             Utilisateur
                         @endif
@@ -51,7 +62,7 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="showSection('departments')">
                             <i class="fas fa-building"></i>
-                            DÃ©partements
+                            Départements
                         </a>
                     </li>
                     <li class="nav-item">
@@ -61,9 +72,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showSection('assignments')">
+                            <i class="fas fa-link"></i>
+                            Affectations
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#" class="nav-link" onclick="showSection('settings')">
                             <i class="fas fa-cog"></i>
-                            ParamÃ¨tres
+                            Paramètres
                         </a>
                     </li>
                     <li class="nav-item">
@@ -101,7 +118,7 @@
                             @csrf
                             <i class="fas fa-sign-out-alt"></i>
                             <button type="submit" style="background: none; border: none; color: inherit; padding: 0; cursor: pointer;">
-                                DÃ©connexion
+                                Déconnexion
                             </button>
                         </form>
                     </li>
@@ -126,10 +143,10 @@
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-card-title">DÃ©partements Actifs</div>
+                        <div class="stat-card-title">Départements Actifs</div>
                         <div class="stat-card-value">{{ $totalDepts ?? '0' }}</div>
                         <div class="stat-card-change">
-                            <i class="fas fa-check"></i> Tous opÃ©rationnels
+                            <i class="fas fa-check"></i> Tous opérationnels
                         </div>
                     </div>
                     <div class="stat-card">
@@ -148,7 +165,7 @@
                     </a>
                     <a href="{{ route('committee.services.list') }}" class="action-card">
                         <i class="fas fa-folder-plus action-icon"></i>
-                        <h3>Liste des Services par Departements</h3>
+                        <h3>Liste des Services par Départements</h3>
                     </a>
                     <a href="{{route('services.create')}}" class="action-card">
                         <i class="fas fa-folder-plus action-icon"></i>
@@ -162,7 +179,7 @@
                 <!-- Recent Activity -->
                 <div class="activity-section">
                     <div class="section-header">
-                        <h2 class="section-title">ActivitÃ©s rÃ©centes</h2>
+                        <h2 class="section-title">Activités récentes</h2>
                         <a href="#" class="btn">Voir tout</a>
                     </div>
                     <table class="activity-table">
@@ -170,9 +187,9 @@
                             <tr>
                                 <th>Utilisateur</th>
                                 <th>Inscription</th>
-                                <th>DerniÃ¨re MAJ</th>
-                                <th>DerniÃ¨re Connexion</th>
-                                <th>DerniÃ¨re ActivitÃ©</th>
+                                <th>Dernière MAJ</th>
+                                <th>Dernière Connexion</th>
+                                <th>Dernière Activité</th>
                                 <th>Statut</th>
                             </tr>
                         </thead>
@@ -198,7 +215,7 @@
                             @empty
                             <tr>
                                 <td colspan="6" class="text-center">
-                                    <i class="fas fa-info-circle"></i> Aucun utilisateur trouvÃ©
+                                    <i class="fas fa-info-circle"></i> Aucun utilisateur trouvé
                                 </td>
                             </tr>
                             @endforelse
@@ -221,8 +238,8 @@
             <!-- Departments Section -->
             <section id="section-departments" style="display:none">
                 <div class="page-header">
-                    <h1 class="page-title">DÃ©partements</h1>
-                    <div class="breadcrumb">Tableau de bord / DÃ©partements</div>
+                    <h1 class="page-title">Départements</h1>
+                    <div class="breadcrumb">Tableau de bord / Départements</div>
                 </div>
                 <div>
                     @include('committee.departments.manage')
@@ -238,11 +255,21 @@
                     @include('committee.services.quickAction')
                 </div>
             </section>
+            <!-- Assignments Section -->
+            <section id="section-assignments" style="display:none">
+                <div class="page-header">
+                    <h1 class="page-title">Gestion des Affectations</h1>
+                    <div class="breadcrumb">Tableau de bord / Gestion des Affectations</div>
+                </div>
+                <div>
+                    @include('committee.assignments.dashboard-section')
+                </div>
+            </section>
             <!-- Settings Section -->
             <section id="section-settings" style="display:none">
                 <div class="page-header">
-                    <h1 class="page-title">ParamÃ¨tres</h1>
-                    <div class="breadcrumb">Tableau de bord / ParamÃ¨tres</div>
+                    <h1 class="page-title">Paramètres</h1>
+                    <div class="breadcrumb">Tableau de bord / Paramètres</div>
                 </div>
                 <div>
                     @include('committee.partials.settings-content')
@@ -261,10 +288,10 @@
                             <div class="report-icon">
                                 <i class="fas fa-users"></i>
                             </div>
-                            <h3>Liste des DÃ©partements et Chefs</h3>
-                            <p>TÃ©lÃ©charger la liste complÃ¨te des dÃ©partements avec leurs chefs respectifs.</p>
+                            <h3>Liste des Départements et Chefs</h3>
+                            <p>Télécharger la liste complète des départements avec leurs chefs respectifs.</p>
                             <a href="{{ route('committee.pdf.departments-heads') }}" class="btn btn-primary" target="_blank">
-                                <i class="fas fa-download"></i> TÃ©lÃ©charger
+                                <i class="fas fa-download"></i> Télécharger
                             </a>
                         </div>
 
@@ -272,10 +299,10 @@
                             <div class="report-icon">
                                 <i class="fas fa-sitemap"></i>
                             </div>
-                            <h3>DÃ©partements, Chefs et Services</h3>
-                            <p>TÃ©lÃ©charger la liste des dÃ©partements avec leurs chefs et services associÃ©s.</p>
+                            <h3>Départements, Chefs et Services</h3>
+                            <p>Télécharger la liste des départements avec leurs chefs et services associés.</p>
                             <a href="{{ route('committee.pdf.departments-heads-services') }}" class="btn btn-primary" target="_blank">
-                                <i class="fas fa-download"></i> TÃ©lÃ©charger
+                                <i class="fas fa-download"></i> Télécharger
                             </a>
                         </div>
 
@@ -283,15 +310,15 @@
                             <div class="report-icon">
                                 <i class="fas fa-user-friends"></i>
                             </div>
-                            <h3>Liste ComplÃ¨te des EmployÃ©s</h3>
-                            <p>TÃ©lÃ©charger la liste dÃ©taillÃ©e de tous les employÃ©s par dÃ©partement.</p>
+                            <h3>Liste Complète des Employés</h3>
+                            <p>Télécharger la liste détaillée de tous les employés par département.</p>
                             <a href="{{ route('committee.pdf.departments-employees') }}" class="btn btn-primary" target="_blank">
-                                <i class="fas fa-download"></i> TÃ©lÃ©charger
+                                <i class="fas fa-download"></i> Télécharger
                             </a>
                         </div>
                     </div>
 
-                    <h2 class="section-subtitle">Historique des Rapports DÃ©partementaux</h2>
+                    <h2 class="section-subtitle">Historique des Rapports Départementaux</h2>
                     <div class="reports-history">
                         @foreach($departmentPdfs ?? [] as $pdf)
                             <div class="report-history-card">
@@ -301,7 +328,7 @@
                                     </div>
                                     <div class="report-details">
                                         <h4>{{ basename($pdf) }}</h4>
-                                        <p>GÃ©nÃ©rÃ© le {{ \Carbon\Carbon::createFromTimestamp(Storage::lastModified('public/' . $pdf))->format('d/m/Y Ã  H:i') }}</p>
+                                        <p>Généré le {{ \Carbon\Carbon::createFromTimestamp(Storage::lastModified('public/' . $pdf))->format('d/m/Y à H:i') }}</p>
                                     </div>
                                 </div>
                                 <div class="report-actions">
@@ -334,7 +361,7 @@
                 <div class="page-header">
                     <h1 class="page-title">
                         <i class="fas fa-file-pdf"></i>
-                        Historique des PDFs par dÃ©partement
+                        Historique des PDFs par département
                     </h1>
                     <div class="breadcrumb">Tableau de bord / Historique PDF</div>
                 </div>
@@ -403,7 +430,7 @@
                                 @else
                                     <div class="no-pdf">
                                         <i class="fas fa-folder-open"></i>
-                                        <p>Aucun PDF disponible pour ce dÃ©partement</p>
+                                        <p>Aucun PDF disponible pour ce département</p>
                                     </div>
                                 @endif
                             </div>
@@ -417,7 +444,7 @@
         
     </div>
     
-    <script src="{{ asset('js/dashboard.js') }}"></script>
+    <script src="{{ asset('js/dashboard.js') }}?v={{ filemtime(public_path('js/dashboard.js')) }}"></script>
 </body>
 </html>
 

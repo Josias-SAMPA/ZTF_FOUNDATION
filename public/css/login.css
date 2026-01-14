@@ -118,9 +118,15 @@
         .modal-backdrop {
             background-color: rgba(0, 0, 0, 0.5);
         }
+
         #departmentModal {
-            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
         }
+
+        #departmentModal.show {
+            display: block;
+        }
+
         .department-form {
             padding: 20px;
         }

@@ -20,7 +20,8 @@
             <tr>
                 <th style="width: 10%;">NÂ°</th>
                 <th style="width: 40%;">DÃ©partement</th>
-                <th style="width: 50%;">Chef de DÃ©partement</th>
+                <th style="width: 50%;">Nom du Chef de Departement</th>
+                <th style="width: 40%;">Matricule du Chef de Departement</th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +29,8 @@
                 <tr>
                     <td style="text-align: center;">{{ $index + 1 }}</td>
                     <td>{{ $department->name }}</td>
-                    <td>{{ $department->head->name ?? 'Non assignÃ©' }}</td>
+                    <td>{{ $department->head->name ?? 'Non renseigné' }}</td>
+                    <td>{{ $department->head->matricule ?? 'Non renseigné' }}</td>
                 </tr>
             @endforeach
         </tbody>

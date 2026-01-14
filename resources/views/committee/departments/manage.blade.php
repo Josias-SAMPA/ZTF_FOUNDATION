@@ -66,7 +66,7 @@
                     </div>
 
                     <div class="head-info">
-                        <h4>Chef de dÃ©partement</h4>
+                        <h4>Chef de département</h4>
                         @if($department->head)
                             <div class="current-head">
                                 <div class="head-details">
@@ -74,26 +74,46 @@
                                     <span>{{ $department->head->name }}</span>
                                 </div>
                                 <div class="head-since">
-                                    Depuis le {{ $department->head_assigned_at->format('d/m/Y') }}
+                                    @if($department->head_assigned_at)
+                                        Depuis le {{ $department->head_assigned_at->format('d/m/Y') }}
+                                    @else
+                                        <span class="text-muted">Date non disponible</span>
+                                    @endif
                                 </div>
+                                @if($department->head->roles && $department->head->roles->count() > 0)
+                                    <div class="head-roles">
+                                        <strong>Rôles assignés :</strong>
+                                        <ul>
+                                            @foreach($department->head->roles as $role)
+                                                <li>
+                                                    <span class="badge badge-primary">{{ $role->display_name ?? $role->name }}</span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                             </div>
-                            <form action="{{ route('departments.head.remove', $department->id) }}" 
-                                  method="POST" 
-                                  onsubmit="return confirm('ÃŠtes-vous sÃ»r de vouloir retirer ce chef de dÃ©partement ?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-user-minus"></i> Retirer
-                                </button>
-                            </form>
-                        @else
-                            <div class="no-head">
-                                <p><i class="fas fa-exclamation-triangle"></i> Aucun chef assignÃ©</p>
-                                <button onclick="openAssignHeadModal('{{ $department->id }}')" 
-                                        class="btn btn-primary btn-sm">
-                                    <i class="fas fa-user-plus"></i> Assigner un chef
-                                </button>
-                            </div>
+                            @if(Auth::user()->isSuperAdmin())
+                                <form action="{{ route('departments.head.remove', $department->id) }}" 
+                                      method="POST" 
+                                      onsubmit="return confirm('Êtes-vous sûr de vouloir retirer ce chef de département ?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-user-minus"></i> Retirer
+                                    </button>
+                                </form>
+                            @endif
+                         @else
+                            @if(Auth::user()->isSuperAdmin())
+                                <div class="no-head">
+                                    <p><i class="fas fa-exclamation-triangle"></i> Aucun chef assigné</p>
+                                    <button onclick="openAssignHeadModal('{{ $department->id }}')" 
+                                            class="btn btn-primary btn-sm">
+                                        <i class="fas fa-user-plus"></i> Assigner un chef
+                                    </button>
+                                </div>
+                            @endif
                         @endif
                     </div>
                 </div>
@@ -105,16 +125,18 @@
                     <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-warning btn-sm">
                         <i class="fas fa-edit"></i> Modifier
                     </a>
+                    @if(Auth::user()->isSuperAdmin())
                     <form action="{{ route('departments.destroy', $department->id) }}" 
                           method="POST" 
                           class="d-inline"
-                          onsubmit="return confirm('ÃŠtes-vous sÃ»r de vouloir supprimer ce dÃ©partement ?');">
+                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce département ?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">
                             <i class="fas fa-trash"></i> Supprimer
                         </button>
                     </form>
+                    @endif
                 </div>
             </div>
         @endforeach

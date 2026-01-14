@@ -4,13 +4,13 @@ function showSection(sectionName) {
         section.style.display = "none";
     });
 
-    // Afficher la section demandée
+    // Afficher la section demandï¿½e
     const targetSection = document.getElementById("section-" + sectionName);
     if (targetSection) {
         targetSection.style.display = "block";
     }
 
-    // Mettre à jour les liens actifs dans la navigation
+    // Mettre ï¿½ jour les liens actifs dans la navigation
     document.querySelectorAll(".nav-link").forEach(link => {
         link.classList.remove("active");
         if (link.getAttribute("onclick")?.includes(sectionName)) {
@@ -18,13 +18,39 @@ function showSection(sectionName) {
         }
     });
 
-    // Sauvegarder la dernière section dans sessionStorage
+    // Sauvegarder la derniï¿½re section dans sessionStorage
     sessionStorage.setItem("lastActiveSection", sectionName);
+}
+
+// Fonction pour basculer la sidebar
+function toggleSidebar() {
+    const sidebar = document.querySelector(".sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const menuToggle = document.getElementById("menuToggle");
+
+    if (sidebar && overlay && menuToggle) {
+        sidebar.classList.toggle("active");
+        overlay.classList.toggle("active");
+        menuToggle.classList.toggle("active");
+    }
+}
+
+// Fonction pour fermer la sidebar
+function closeSidebar() {
+    const sidebar = document.querySelector(".sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const menuToggle = document.getElementById("menuToggle");
+
+    if (sidebar && overlay && menuToggle) {
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+        menuToggle.classList.remove("active");
+    }
 }
 
 // Au chargement de la page
 document.addEventListener("DOMContentLoaded", function() {
-    // Récupérer la dernière section active ou utiliser "dashboard" par défaut
+    // RÃ©cupÃ©rer la derniÃ¨re section active ou utiliser "dashboard" par dÃ©faut
     const lastSection = sessionStorage.getItem("lastActiveSection") || "dashboard";
     showSection(lastSection);
 
@@ -33,4 +59,18 @@ document.addEventListener("DOMContentLoaded", function() {
     if (activeLink) {
         activeLink.classList.add("active");
     }
+
+    // Fermer la sidebar si on clique sur un lien de navigation
+    document.querySelectorAll(".nav-link").forEach(link => {
+        link.addEventListener("click", function() {
+            closeSidebar();
+        });
+    });
+
+    // Fermer la sidebar au redimensionnement si on passe en mode desktop
+    window.addEventListener("resize", function() {
+        if (window.innerWidth > 768) {
+            closeSidebar();
+        }
+    });
 });

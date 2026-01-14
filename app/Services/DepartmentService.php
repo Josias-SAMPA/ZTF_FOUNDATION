@@ -34,15 +34,15 @@ class DepartmentService
         try {
             DB::beginTransaction();
 
-            // Créer ou récupérer le rôle "Chef de Département"
+            // Créer le rôle "Chef de Département" s'il n'existe pas
             $role = Role::firstOrCreate(
-                ['name' => 'department-head'],
+                ['code' => 'CD'],
                 [
+                    'name' => 'department-head',
                     'display_name' => 'Chef de Département',
                     'description' => 'Responsable de la gestion et de la supervision du département',
                     'guard_name' => 'web',
-                    'grade' => 2,
-                    'Code' => strtoupper($code)
+                    'grade' => 2
                 ]
             );
 
@@ -51,17 +51,16 @@ class DepartmentService
                 'name' => $name,
                 'code' => strtoupper($code),
                 'description' => 'Département ' . $name . ' - ' . strtoupper($code),
-                'head_id' => $user->id
+                'head_id' => $user->id,
+                'head_assigned_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
-            // Mettre à jour l'utilisateur
-            $user->update([
-                'matricule' => "CM-HQ-{$code}-CD",
-                'department_id' => $department->id
-            ]);
-
-            // Assigner le rôle
-            $user->roles()->syncWithoutDetaching([$role->id]);
+            // Assigner le rôle "Chef de Département" à l'utilisateur
+            if ($role && !$user->roles()->where('code', 'CD')->exists()) {
+                $user->roles()->attach($role->id);
+            }
 
             DB::commit();
             return true;

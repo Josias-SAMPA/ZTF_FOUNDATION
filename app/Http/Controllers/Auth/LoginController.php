@@ -39,9 +39,10 @@ class LoginController extends Controller
 
         // Créer le rôle Staff s'il n'existe pas
         $this->ensureStaffRoleExists();
-
+        //Creer le role chef de departement s'il n'existe pas
         $this->ensureRoleDeptHeadExists();
-
+        //Creer le role membre comite de nehemie s'il n'existe pas
+        $this->ensureRoleCommitteeMemberExists();
         // Vérifie si l'utilisateur existe par email ou matricule
         $existingUser = User::where('email', $request->email)
                            ->orWhere('matricule', $request->matricule)
@@ -386,6 +387,23 @@ class LoginController extends Controller
             Log::info('Role chef de departement cree avec succes');
         }
          return $deptHead;
+    }
+
+    public function ensureRoleCommitteeMemberExists(){
+        $committeeMember = Role::where('code','NEH')->first();
+
+        if(!$committeeMember){
+            Role::create([
+                'name'=>'membre_comite_nehemie',
+                'display_name'=>'Membre Comite Nehemie',
+                'code'=>'NEH',
+                'grade'=>1,
+                'description'=>'Poste de membre du comite de nehemie',
+                'guard_name'=>'web'
+            ]);
+            Log::info('Role membre comite de nehemie cree avec succes');
+        }
+         return $committeeMember;
     }
 
     /**
